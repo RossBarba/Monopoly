@@ -178,9 +178,7 @@ static void roll(player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[0]);
-				System.out.println("You have bought " + allProperties[0].propertyName + " for " + allProperties[0].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[0].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[0]); break;
 			default: System.out.println("Please enter a valid command");
@@ -199,9 +197,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[1]);
-			System.out.println("You have bought " + allProperties[1].propertyName + " for " + allProperties[1].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[1].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[1]); break;
 		default: System.out.println("Please enter a valid command");
@@ -219,9 +215,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[2]);
-			System.out.println("You have bought " + allProperties[2].propertyName + " for " + allProperties[2].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[2].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[2]); break;
 		default: System.out.println("Please enter a valid command");
@@ -238,9 +232,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[3]);
-			System.out.println("You have bought " + allProperties[3].propertyName + " for " + allProperties[3].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[3].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[3]); break;
 		default: System.out.println("Please enter a valid command");
@@ -259,9 +251,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[4]);
-			System.out.println("You have bought " + allProperties[4].propertyName + " for " + allProperties[4].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[4].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[4]); break;
 		default: System.out.println("Please enter a valid command");
@@ -278,9 +268,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[5]);
-			System.out.println("You have bought " + allProperties[5].propertyName + " for " + allProperties[5].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[5].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[5]); break;
 		default: System.out.println("Please enter a valid command");
@@ -298,9 +286,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[6]);
-			System.out.println("You have bought " + allProperties[6].propertyName + " for " + allProperties[6].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[6].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[6]); break;
 		default: System.out.println("Please enter a valid command");
@@ -316,9 +302,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[7]);
-			System.out.println("You have bought " + allProperties[7].propertyName + " for " + allProperties[7].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[7].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[7]); break;
 		default: System.out.println("Please enter a valid command");
@@ -335,9 +319,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[8]);
-			System.out.println("You have bought " + allProperties[8].propertyName + " for " + allProperties[8].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[8].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[8]); break;
 		default: System.out.println("Please enter a valid command");
@@ -355,9 +337,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[9]);
-			System.out.println("You have bought " + allProperties[9].propertyName + " for " + allProperties[9].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[9].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[0]); break;
 		default: System.out.println("Please enter a valid command");
@@ -375,9 +355,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[10]);
-			System.out.println("You have bought " + allProperties[10].propertyName + " for " + allProperties[10].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[10].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[10]); break;
 		default: System.out.println("Please enter a valid command");
@@ -395,9 +373,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[11]);
-			System.out.println("You have bought " + allProperties[11].propertyName + " for " + allProperties[11].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[11].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[11]); break;
 		default: System.out.println("Please enter a valid command");
@@ -417,9 +393,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[12]);
-			System.out.println("You have bought " + allProperties[12].propertyName + " for " + allProperties[12].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[12].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[12]); break;
 		default: System.out.println("Please enter a valid command");
@@ -437,9 +411,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[13]);
-			System.out.println("You have bought " + allProperties[13].propertyName + " for " + allProperties[13].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[13].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[13]); break;
 		default: System.out.println("Please enter a valid command");
@@ -458,9 +430,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[14]);
-			System.out.println("You have bought " + allProperties[14].propertyName + " for " + allProperties[14].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[14].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[14]); break;
 		default: System.out.println("Please enter a valid command");
@@ -480,9 +450,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[15]);
-			System.out.println("You have bought " + allProperties[15].propertyName + " for " + allProperties[15].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[15].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[15]); break;
 		default: System.out.println("Please enter a valid command");
@@ -500,9 +468,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[16]);
-			System.out.println("You have bought " + allProperties[16].propertyName + " for " + allProperties[16].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[16].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[16]); break;
 		default: System.out.println("Please enter a valid command");
@@ -520,9 +486,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[17]);
-			System.out.println("You have bought " + allProperties[17].propertyName + " for " + allProperties[17].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[17].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[17]); break;
 		default: System.out.println("Please enter a valid command");
@@ -540,9 +504,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[18]);
-			System.out.println("You have bought " + allProperties[18].propertyName + " for " + allProperties[18].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[18].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[18]); break;
 		default: System.out.println("Please enter a valid command");
@@ -560,9 +522,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[19]);
-			System.out.println("You have bought " + allProperties[19].propertyName + " for " + allProperties[19].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[19].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[19]); break;
 		default: System.out.println("Please enter a valid command");
@@ -580,9 +540,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[20]);
-			System.out.println("You have bought " + allProperties[20].propertyName + " for " + allProperties[20].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[20].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[20]); break;
 		default: System.out.println("Please enter a valid command");
@@ -600,9 +558,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[21]);
-			System.out.println("You have bought " + allProperties[21].propertyName + " for " + allProperties[21].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[21].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[21]); break;
 		default: System.out.println("Please enter a valid command");
@@ -621,9 +577,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[22]);
-			System.out.println("You have bought " + allProperties[22].propertyName + " for " + allProperties[22].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[22].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[22]); break;
 		default: System.out.println("Please enter a valid command");
@@ -641,9 +595,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[23]);
-			System.out.println("You have bought " + allProperties[23].propertyName + " for " + allProperties[23].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[23].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[23]); break;
 		default: System.out.println("Please enter a valid command");
@@ -663,9 +615,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[24]);
-			System.out.println("You have bought " + allProperties[24].propertyName + " for " + allProperties[24].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[24].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[24]); break;
 		default: System.out.println("Please enter a valid command");
@@ -683,9 +633,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[25]);
-			System.out.println("You have bought " + allProperties[25].propertyName + " for " + allProperties[25].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[25].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[25]); break;
 		default: System.out.println("Please enter a valid command");
@@ -705,9 +653,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[26]);
-			System.out.println("You have bought " + allProperties[26].propertyName + " for " + allProperties[26].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[26].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[26]); break;
 		default: System.out.println("Please enter a valid command");
@@ -726,9 +672,7 @@ static void roll(player player) {
 		switch(command){
 		case "Yes": 
 			buyProperty(player, allProperties[27]);
-			System.out.println("You have bought " + allProperties[27].propertyName + " for " + allProperties[27].buyPrice); 
-			System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-			System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[27].owner); break;
+			break;
 		case "No": 
 			auctionProperty(allProperties[27]); break;
 		default: System.out.println("Please enter a valid command");
@@ -749,8 +693,7 @@ static void roll(player player) {
 		doubletracker += 1;
 		continue;
 	}
-	System.out.println("Board position test " + player.boardPosition);
-	System.out.println(player.playerName + " money balance is " + player.moneyBalance);
+	System.out.println(player.playerName + " has exhaused all rolls at board space " + player.boardPosition + " with a money balance of $" + player.moneyBalance);
 	doubletracker = 0;
 	player.rollTurn = false;
 	}
@@ -770,10 +713,98 @@ static void buyProperty(player player, property property){
 	property.owned = true;
 	property.owner = player;
 	player.moneyBalance -= property.buyPrice;
+	//prints out the property bought and now account balance
+	System.out.println(player.playerName + " has bought " + property.propertyName + " for $" + property.buyPrice + " and now has an account balance of " + player.moneyBalance);
+	//add the property to player's owned property's array
+	if(player.ownedProperties.length == 0 || player.ownedProperties == null){
+		property [] temp = new property[1];
+		temp[0] = property;
+		player.ownedProperties = temp;
+	}
+	else{
+		property [] temp = new property[player.ownedProperties.length + 1];
+		for (int i = 0; i < player.ownedProperties.length; i++){
+			temp[i] = player.ownedProperties[i];
+		}
+		temp[player.ownedProperties.length] = property;
+		player.ownedProperties = temp;
+	}
+	//prints out the owned properties
+	System.out.print(player.playerName + " now owns the following properties: ");
+	for(int a = 0; a < player.ownedProperties.length; a++){
+		if(a == player.ownedProperties.length -1){
+			System.out.print(player.ownedProperties[a].propertyName + "\n");
+		}
+		else{
+			System.out.print(player.ownedProperties[a].propertyName + ", ");
+		}
+	}
 }
 
 static void auctionProperty(property property){
-	//will integrate a dynamic auctioning system when we code for event handling
+	System.out.println("You have opted not to buy the property and the property will go to auction! Beginning auction now!");
+	boolean tempvar = true;
+	int tempprice = 0;
+	player templeader = null;
+	
+	while(tempvar){
+		int counter = 0;
+		for(int i = 0; i < playerList.length; i++){
+			Scanner sc = new Scanner(System.in);
+			System.out.println(playerList[i].playerName + " would you like to bid on " + property.propertyName + "? The current bid is " + tempprice);
+			String command = sc.nextLine();
+			switch(command){
+			case "Yes": 
+				System.out.println("What would you like your bid to be?");
+				int bidamount = sc.nextInt(); 
+				if(bidamount > tempprice){
+					templeader = playerList[i];
+					tempprice = bidamount; 
+					counter = 1;
+				}
+				else{
+					System.out.println("Your bid was not high enough to out bid the leader!");
+					counter += 1;
+				}
+				break;
+			case "No": counter +=1; System.out.println("You chose not to bid on this property during this round of bidding"); break;
+			default: counter +=1; System.out.println("You did not choose an appropriate option and therefore cannot bid on this property during this round of bidding");
+			}
+			if(counter == playerList.length && tempprice != 0){
+				tempvar = false; 
+			}
+			if(counter == playerList.length && tempprice == 0){
+				System.out.println("Somebody will have to bid on this property to continue the game!");
+				counter = 0;
+			}
+		}
+	}
+	property.owned = true;
+	property.owner = templeader;
+	templeader.moneyBalance -= tempprice;
+	if(templeader.ownedProperties.length == 0 || templeader.ownedProperties == null){
+		property [] temp = new property[1];
+		temp[0] = property;
+		templeader.ownedProperties = temp;
+	}
+	else{
+		property [] temp = new property[templeader.ownedProperties.length + 1];
+		for (int i = 0; i < templeader.ownedProperties.length; i++){
+			temp[i] = templeader.ownedProperties[i];
+		}
+		temp[templeader.ownedProperties.length] = property;
+		templeader.ownedProperties = temp;
+	}
+	//prints out the owned properties
+	System.out.print(templeader.playerName + " now owns the following properties: ");
+	for(int a = 0; a < templeader.ownedProperties.length; a++){
+		if(a == templeader.ownedProperties.length -1){
+			System.out.print(templeader.ownedProperties[a].propertyName + "\n");
+		}
+		else{
+			System.out.print(templeader.ownedProperties[a].propertyName + ", ");
+		}
+	}
 }
 static void payRent(player payer, player reciever, int amount) {
 	if(payer == reciever){
@@ -803,22 +834,43 @@ static void drawCommunityChest (player player) {
 	int card = rand.nextInt(16);
 	
 	switch (card) {
-	case 0: System.out.println(communityChestDescriptions[0]); player.moneyBalance += 100; break;
-	case 1: System.out.println(communityChestDescriptions[1]); player.moneyBalance += 50; break; 
+	case 0: System.out.println(communityChestDescriptions[0]); player.moneyBalance += 100; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
+	case 1: System.out.println(communityChestDescriptions[1]); player.moneyBalance += 50; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
 	case 2: System.out.println(communityChestDescriptions[2]); player.inJail = true; player.boardPosition = 10; break;
-	case 3: System.out.println(communityChestDescriptions[3]); player.moneyBalance -= 100; break;
-	case 4: System.out.println(communityChestDescriptions[4]); player.moneyBalance += 20; break;
-	case 5: System.out.println(communityChestDescriptions[5]); player.moneyBalance += 10; break;
+	case 3: System.out.println(communityChestDescriptions[3]); player.moneyBalance -= 100; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
+	case 4: System.out.println(communityChestDescriptions[4]); player.moneyBalance += 20; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
+	case 5: System.out.println(communityChestDescriptions[5]); player.moneyBalance += 10; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
 	case 6: System.out.println(communityChestDescriptions[6]); player.JailFreeCards +=1; break; 
-	case 7: System.out.println(communityChestDescriptions[7]); player.moneyBalance += 30; break; //have to return to reduce money balances of other players, likely using loop
-	case 8: System.out.println(communityChestDescriptions[8]); player.moneyBalance += 200; player.boardPosition = 0; break;
-	case 9: System.out.println(communityChestDescriptions[9]); player.moneyBalance -=50; break; 
-	case 10: System.out.println(communityChestDescriptions[10]); player.moneyBalance += 25; break; 
-	case 11: System.out.println(communityChestDescriptions[11]); player.moneyBalance += 100; break; 
-	case 12: System.out.println(communityChestDescriptions[12]); player.moneyBalance -= 50; break; 
-	case 13: System.out.println(communityChestDescriptions[13]); player.moneyBalance += 100; break; 
-	case 14: System.out.println(communityChestDescriptions[14]); break; //have to access properties for this method using loop
-	case 15: System.out.println(communityChestDescriptions[15]); player.moneyBalance += 200; break;
+	case 7: System.out.println(communityChestDescriptions[7]); 
+	for(int i = 0; i < playerList.length; i++){
+		if(playerList[i] == player){
+			
+		}
+		else{
+			playerList[i].moneyBalance += 10;
+			player.moneyBalance -= 10;
+			System.out.println(player.playerName + " paid " + playerList[i].playerName + " $10 dollars");
+		}
+	}
+	for(int i = 0; i < playerList.length; i++){
+		System.out.println(playerList[i].playerName + " new account balance is " + playerList[i].moneyBalance);
+	}
+	break; 
+	case 8: System.out.println(communityChestDescriptions[8]); player.moneyBalance += 200; player.boardPosition = 0; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
+	case 9: System.out.println(communityChestDescriptions[9]); player.moneyBalance -=50; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+	case 10: System.out.println(communityChestDescriptions[10]); player.moneyBalance += 25; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+	case 11: System.out.println(communityChestDescriptions[11]); player.moneyBalance += 100; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+	case 12: System.out.println(communityChestDescriptions[12]); player.moneyBalance -= 50; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+	case 13: System.out.println(communityChestDescriptions[13]); player.moneyBalance += 100; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+	case 14: System.out.println(communityChestDescriptions[14]); 
+	for(int i = 0; i < player.ownedProperties.length; i++){
+		//this is a for loop to scan through owned properties. We may have to change the design of owned properties 
+		//to accomodate for this card method
+		//Tried using instance of and had some troubles, may have to make a method
+		//Note that not all properties have the property int houses or boolean hotels
+	}
+	System.out.println("This method is still being built, will not change player's money balance yet!"); break; //have to access properties for this method using loop
+	case 15: System.out.println(communityChestDescriptions[15]); player.moneyBalance += 200; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
 	}
 }
 
@@ -840,9 +892,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[20]);
-				System.out.println("You have bought " + allProperties[20].propertyName + " for " + allProperties[20].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[20].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[20]); break;
 			default: System.out.println("Please enter a valid command");
@@ -863,9 +913,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[7]);
-				System.out.println("You have bought " + allProperties[7].propertyName + " for " + allProperties[7].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[7].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[7]); break;
 			default: System.out.println("Please enter a valid command");
@@ -887,9 +935,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[2]);
-				System.out.println("You have bought " + allProperties[2].propertyName + " for " + allProperties[2].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[2].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[2]); break;
 			default: System.out.println("Please enter a valid command");
@@ -908,9 +954,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[10]);
-				System.out.println("You have bought " + allProperties[10].propertyName + " for " + allProperties[10].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[10].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[10]); break;
 			default: System.out.println("Please enter a valid command");
@@ -928,9 +972,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[17]);
-				System.out.println("You have bought " + allProperties[17].propertyName + " for " + allProperties[17].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[17].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[17]); break;
 			default: System.out.println("Please enter a valid command");
@@ -948,16 +990,28 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[25]);
-				System.out.println("You have bought " + allProperties[25].propertyName + " for " + allProperties[25].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[25].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[25]); break;
 			default: System.out.println("Please enter a valid command");
 			}
 		}
 	} break; 
-	case 2: System.out.println(chanceDescriptions[2]); player.moneyBalance -= 150; break; //again have to use a loop to update other player money values using player list
+	case 2: System.out.println(chanceDescriptions[2]); 
+	for(int i = 0; i < playerList.length; i++){
+		if(playerList[i] == player){
+			
+		}
+		else{
+			playerList[i].moneyBalance += 50;
+			player.moneyBalance -= 50;
+		}
+	}
+	//Prints updated player money balances
+	for(int i = 0; i < playerList.length; i++){
+		System.out.println(playerList[i].playerName + " has an account balance of " + playerList[i].moneyBalance);
+	}
+	break; 
 	case 3: System.out.println(chanceDescriptions[3]); player.inJail = true; player.boardPosition = 10; break;
 	case 4: System.out.println(chanceDescriptions[4]); player.JailFreeCards +=1; break; 
 	case 5: System.out.println(chanceDescriptions[5]); if(player.boardPosition >= 35 && player.boardPosition < 5){
@@ -975,9 +1029,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[2]);
-				System.out.println("You have bought " + allProperties[2].propertyName + " for " + allProperties[2].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[2].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[2]); break;
 			default: System.out.println("Please enter a valid command");
@@ -996,9 +1048,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[10]);
-				System.out.println("You have bought " + allProperties[10].propertyName + " for " + allProperties[10].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[10].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[10]); break;
 			default: System.out.println("Please enter a valid command");
@@ -1016,9 +1066,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[17]);
-				System.out.println("You have bought " + allProperties[17].propertyName + " for " + allProperties[17].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[17].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[17]); break;
 			default: System.out.println("Please enter a valid command");
@@ -1036,9 +1084,7 @@ static void drawChance (player player) {
 			switch(command){
 			case "Yes": 
 				buyProperty(player, allProperties[25]);
-				System.out.println("You have bought " + allProperties[25].propertyName + " for " + allProperties[25].buyPrice); 
-				System.out.println("FOR TESTING PURPOSES: New player money balance is: " + player.moneyBalance); 
-				System.out.println("FOR TESTING PURPOSES: Property owner is: " + allProperties[25].owner); break;
+				break;
 			case "No": 
 				auctionProperty(allProperties[25]); break;
 			default: System.out.println("Please enter a valid command");
@@ -1047,7 +1093,35 @@ static void drawChance (player player) {
 	} break; 
 	case 6: System.out.println(chanceDescriptions[6]); player.moneyBalance += 50; break; 
 	case 7: System.out.println(chanceDescriptions[7]); player.moneyBalance += 150; break; 
-	case 8: System.out.println(chanceDescriptions[8]); player.boardPosition -= 3; break; //have to make sure switch excutes in roll method
+	case 8: System.out.println(chanceDescriptions[8]); player.boardPosition -= 3; 
+	if(player.boardPosition == 4){
+		player.moneyBalance -= 200;
+		System.out.println("You paid $200 in income tax!");
+		//have to make sure switch excutes in roll method
+	}
+	else if(player.boardPosition == 19){
+		System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName); 
+		if(allProperties[13].owned==false){
+			//first, need to allow user to buy property if desired, then allow them to auction the property if not
+			System.out.println("Would you like to buy this property for $" + allProperties[13].buyPrice);
+			Scanner sc = new Scanner(System.in);
+			String command = sc.next();
+			switch(command){
+			case "Yes": 
+				buyProperty(player, allProperties[13]);
+				break;
+			case "No": 
+				auctionProperty(allProperties[13]); break;
+			default: System.out.println("Please enter a valid command");
+			}
+		}
+		else{
+			 payRent(player, allProperties[13].owner, allProperties[13].rent); 
+		}
+	}
+	else{
+		drawCommunityChest(player);
+	} break;
 	case 9: System.out.println(chanceDescriptions[9]); if(player.boardPosition > 24){
 		player.moneyBalance += 200;
 		player.boardPosition = 24;
@@ -1083,7 +1157,7 @@ static void drawChance (player player) {
 		boolean turn = false;
 		boolean rollTurn = false;
 		boolean inJail = false;
-		property[] ownedProperties;
+		property[] ownedProperties = new property[0];
 		int jailCounter = 0;
 		int boardPosition = 0;
 		int JailFreeCards = 0; //need to write up the ability to sell these
