@@ -171,18 +171,7 @@ static void roll(player player) {
 	case 0: System.out.println("You are at board position " + player.boardPosition + ", Pass Go, collect $200!"); break;
 	case 1: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[0].propertyName); 
 		if(allProperties[0].owned==false){
-			//first, need to allow user to buy property if desired, then allow them to auction the property if not
-			System.out.println("Would you like to buy this property for $" + allProperties[0].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[0]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[0]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[0]); 
 		}
 		else{
 			 payRent(player, allProperties[0].owner, allProperties[0].rent); 
@@ -191,52 +180,22 @@ static void roll(player player) {
 	drawCommunityChest(player); break;
 	case 3: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[1].propertyName); 
 		if(allProperties[1].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[1].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[1]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[1]); break;
-		default: System.out.println("Please enter a valid command");
+			manageUnownedProperty(player, allProperties[1]);
 		}
-	}
 	else{
 		 payRent(player, allProperties[1].owner, allProperties[1].rent); 
 	} break;
 	case 4: System.out.println("You are at board position " + player.boardPosition + ", income tax, pay $200!"); player.moneyBalance -= 200; break;
 	case 5: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName); 
 	if(allProperties[2].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[2].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[2]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[2]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[2]);
 	}
 	else{
 		 payRent(player, allProperties[2].owner, allProperties[2].rent); 
 	} break;
 	case 6: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[3].propertyName); 
 	if(allProperties[3].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[3].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[3]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[3]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[3]);
 	}
 	else{
 		 payRent(player, allProperties[3].owner, allProperties[3].rent); 
@@ -245,34 +204,14 @@ static void roll(player player) {
 	drawChance(player); break;
 	case 8: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[4].propertyName); 
 	if(allProperties[4].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[4].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[4]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[4]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[4]);
 	}
 	else{
 		 payRent(player, allProperties[4].owner, allProperties[4].rent); 
 	} break;
 	case 9: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[5].propertyName); 
 	if(allProperties[5].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[5].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[5]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[5]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[5]);
 	}
 	else{
 		 payRent(player, allProperties[5].owner, allProperties[5].rent); 
@@ -280,104 +219,42 @@ static void roll(player player) {
 	case 10: if(player.inJail == false) System.out.println("You are just visiting jail"); break;
 	case 11: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName); 
 	if(allProperties[6].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[6].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[6]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[6]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[6]);
 	}
 	else{
 		 payRent(player, allProperties[6].owner, allProperties[6].rent); 
 	} break;
-	case 12: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[7].propertyName); if(allProperties[7].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[7].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[7]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[7]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+	case 12: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[7].propertyName); 
+	if(allProperties[7].owned==false){
+		manageUnownedProperty(player, allProperties[7]);
 	}
 	else{
 		 payRent(player, allProperties[7].owner, allProperties[7].rent); 
 	} break;
 	case 13: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[8].propertyName); 
 	if(allProperties[8].owned==false){
-		System.out.println("Would you like to buy this property for $" + allProperties[8].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[8]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[8]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[8]);
 	}
 	else{
 		 payRent(player, allProperties[8].owner, allProperties[8].rent); 
 	} break;
 	case 14: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[9].propertyName); 
 	if(allProperties[9].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[9].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[9]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[0]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[9]);
 	}
 	else{
 		 payRent(player, allProperties[0].owner, allProperties[9].rent); 
 	} break;
 	case 15: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[10].propertyName); 
 	if(allProperties[10].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[10].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[10]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[10]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[10]);
 	}
 	else{
 		 payRent(player, allProperties[10].owner, allProperties[10].rent); 
 	} break;
 	case 16: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[11].propertyName); 
 	if(allProperties[11].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[11].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[11]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[11]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[11]);
 	}
 	else{
 		 payRent(player, allProperties[11].owner, allProperties[11].rent); 
@@ -386,36 +263,14 @@ static void roll(player player) {
 	drawCommunityChest(player); break;
 	case 18: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[12].propertyName); 
 	if(allProperties[12].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[12].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[12]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[12]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[12]);
 	}
 	else{
 		 payRent(player, allProperties[12].owner, allProperties[12].rent); 
 	} break;
 	case 19: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName); 
 	if(allProperties[13].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[13].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[13]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[13]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[13]);
 	}
 	else{
 		 payRent(player, allProperties[13].owner, allProperties[13].rent); 
@@ -423,18 +278,7 @@ static void roll(player player) {
 	case 20: System.out.println("You are at board position " + player.boardPosition + ", free parking, enjoy your stay!"); break;
 	case 21: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[14].propertyName); 
 	if(allProperties[14].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[14].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[14]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[14]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[14]);
 	}
 	else{
 		 payRent(player, allProperties[14].owner, allProperties[14].rent); 
@@ -443,126 +287,49 @@ static void roll(player player) {
 	drawChance(player); break;
 	case 23: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[15].propertyName); 
 	if(allProperties[15].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[15].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[15]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[15]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[15]);
 	}
 	else{
 		 payRent(player, allProperties[15].owner, allProperties[15].rent); 
 	} break;
 	case 24: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName); 
 	if(allProperties[16].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[16].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[16]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[16]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[16]);
 	}
 	else{
 		 payRent(player, allProperties[16].owner, allProperties[16].rent); 
 	} break;
 	case 25: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[17].propertyName); 
 	if(allProperties[17].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[17].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[17]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[17]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[17]);
 	}
 	else{
 		 payRent(player, allProperties[17].owner, allProperties[17].rent); 
 	} break;
 	case 26: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[18].propertyName); 
 	if(allProperties[18].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[18].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[18]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[18]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[18]);
 	}
 	else{
 		 payRent(player, allProperties[18].owner, allProperties[18].rent); 
 	} break;
 	case 27: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[19].propertyName); 
 	if(allProperties[19].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[19].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[19]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[19]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[19]);
 	}
 	else{
 		 payRent(player, allProperties[19].owner, allProperties[19].rent); 
 	} break;
 	case 28: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[20].propertyName); 
 	if(allProperties[20].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[20].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[20]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[20]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[20]);
 	}
 	else{
 		 payRent(player, allProperties[20].owner, allProperties[20].rent); 
 	} break;
 	case 29: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[21].propertyName); 
 	if(allProperties[21].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[21].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[21]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[21]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[21]);
 	}
 	else{
 		 payRent(player, allProperties[21].owner, allProperties[21].rent); 
@@ -570,36 +337,14 @@ static void roll(player player) {
 	case 30: player.inJail = true; System.out.println("You landed on go to jail, go to jail immediately!"); break;
 	case 31: System.out.println("You are at board position " + player.boardPosition + " " + allProperties[22].propertyName); 
 	if(allProperties[22].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[22].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[22]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[22]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[22]);
 	}
 	else{
 		 payRent(player, allProperties[22].owner, allProperties[22].rent); 
 	} break;
 	case 32: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[23].propertyName); 
 	if(allProperties[23].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[23].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[23]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[23]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[23]);
 	}
 	else{
 		 payRent(player, allProperties[23].owner, allProperties[23].rent); 
@@ -608,36 +353,14 @@ static void roll(player player) {
 	drawCommunityChest(player); break;
 	case 34: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[24].propertyName); 
 	if(allProperties[24].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[24].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[24]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[24]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[24]);
 	}
 	else{
 		 payRent(player, allProperties[24].owner, allProperties[24].rent); 
 	} break;
 	case 35: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[25].propertyName); 
 	if(allProperties[25].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[25].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[25]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[25]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[25]);
 	}
 	else{
 		 payRent(player, allProperties[25].owner, allProperties[25].rent); 
@@ -646,18 +369,7 @@ static void roll(player player) {
 	drawChance(player); break;
 	case 37: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[26].propertyName); 
 	if(allProperties[26].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[26].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[26]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[26]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[26]);
 	}
 	else{
 		 payRent(player, allProperties[26].owner, allProperties[26].rent); 
@@ -665,18 +377,7 @@ static void roll(player player) {
 	case 38: System.out.println("You are at board position " + player.boardPosition + ", luxury tax. Pay $100!"); player.moneyBalance-=100; break;
 	case 39: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[27].propertyName); 
 	if(allProperties[27].owned==false){
-		//first, need to allow user to buy property if desired, then allow them to auction the property if not
-		System.out.println("Would you like to buy this property for $" + allProperties[27].buyPrice);
-		Scanner sc = new Scanner(System.in);
-		String command = sc.next();
-		switch(command){
-		case "Yes": 
-			buyProperty(player, allProperties[27]);
-			break;
-		case "No": 
-			auctionProperty(allProperties[27]); break;
-		default: System.out.println("Please enter a valid command");
-		}
+		manageUnownedProperty(player, allProperties[27]);
 	}
 	else{
 		 payRent(player, allProperties[27].owner, allProperties[27].rent); 
@@ -707,6 +408,20 @@ static void barter(player player) {
 //players can buy hotels/houses and/or mortgage properties
 static void propertyManagement(player player) {
 	
+}
+
+static void manageUnownedProperty(player player, property property){
+	System.out.println(property.propertyName + "is unowned, would you like to buy it, or auction it?");
+	boolean tempCommand = true;
+	Scanner sc = new Scanner(System.in);
+	while(tempCommand){
+		String command = sc.nextLine();
+		switch(command){
+		case "Buy": buyProperty(player, property); tempCommand = false; break;
+		case "Auction": auctionProperty(property); tempCommand = false; break;
+		default: System.out.println("Please enter a valid command"); 
+		}
+	}
 }
 
 static void buyProperty(player player, property property){
@@ -746,10 +461,17 @@ static void auctionProperty(property property){
 	boolean tempvar = true;
 	int tempprice = 0;
 	player templeader = null;
+	int counter = 0;
 	
 	while(tempvar){
-		int counter = 0;
 		for(int i = 0; i < playerList.length; i++){
+			if(counter == playerList.length && tempprice != 0){
+				tempvar = false; continue;
+			}
+			if(counter == playerList.length && tempprice == 0){
+				System.out.println("Somebody will have to bid on this property to continue the game!");
+				counter = 0;
+			}
 			Scanner sc = new Scanner(System.in);
 			System.out.println(playerList[i].playerName + " would you like to bid on " + property.propertyName + "? The current bid is " + tempprice);
 			String command = sc.nextLine();
@@ -769,13 +491,6 @@ static void auctionProperty(property property){
 				break;
 			case "No": counter +=1; System.out.println("You chose not to bid on this property during this round of bidding"); break;
 			default: counter +=1; System.out.println("You did not choose an appropriate option and therefore cannot bid on this property during this round of bidding");
-			}
-			if(counter == playerList.length && tempprice != 0){
-				tempvar = false; 
-			}
-			if(counter == playerList.length && tempprice == 0){
-				System.out.println("Somebody will have to bid on this property to continue the game!");
-				counter = 0;
 			}
 		}
 	}
@@ -813,6 +528,7 @@ static void payRent(player payer, player reciever, int amount) {
 	else{
 		payer.moneyBalance -= amount; 
 		reciever.moneyBalance += amount;
+		System.out.println(payer.playerName + " has payed $" + amount + " to " + reciever.playerName + " in rent!");
 	}
 }
 static void rollDice() {
@@ -844,7 +560,6 @@ static void drawCommunityChest (player player) {
 	case 7: System.out.println(communityChestDescriptions[7]); 
 	for(int i = 0; i < playerList.length; i++){
 		if(playerList[i] == player){
-			
 		}
 		else{
 			playerList[i].moneyBalance += 10;
@@ -882,42 +597,22 @@ static void drawChance (player player) {
 	switch (card) {
 	case 0: System.out.println(chanceDescriptions[0]); if(player.boardPosition >= 12 && player.boardPosition < 28){
 		player.boardPosition = 28;
-		if(allProperties[20].owned=true){
+		if(allProperties[20].owned==true){
 			payRent(player, allProperties[20].owner, allProperties[20].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[20].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[20]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[20]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[20]);
 		}
 	} else{
 		if(player.boardPosition > 27){
 			player.moneyBalance +=200;
 		}
 		player.boardPosition = 12; 
-		if(allProperties[7].owned=true){
+		if(allProperties[7].owned==true){
 			payRent(player, allProperties[7].owner, allProperties[7].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[7].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[7]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[7]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[7]);
 		}
 	} break;
 	case 1: System.out.println(chanceDescriptions[1]); if(player.boardPosition >= 35 && player.boardPosition < 5){
@@ -925,82 +620,41 @@ static void drawChance (player player) {
 			player.moneyBalance += 200;
 		}
 		player.boardPosition = 5;
-		if(allProperties[2].owned=true){
+		if(allProperties[2].owned==true){
 			payRent(player, allProperties[2].owner, allProperties[2].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[2].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[2]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[2]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[2]);
 		}
 	} 
 	else if(player.boardPosition >= 5 && player.boardPosition < 15){
 		player.boardPosition = 15;
-		if(allProperties[10].owned=true){
+		if(allProperties[10].owned==true){
 			payRent(player, allProperties[10].owner, allProperties[10].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[10].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[10]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[10]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[10]);
 		}
 	} else if(player.boardPosition >= 15 && player.boardPosition < 25){
 		player.boardPosition = 25;
-		if(allProperties[10].owned=true){
+		if(allProperties[17].owned==true){
 			payRent(player, allProperties[17].owner, allProperties[17].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[17].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[17]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[17]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[17]);
 		}
 	} else {
 		player.boardPosition = 35;
-		if(allProperties[25].owned=true){
+		if(allProperties[25].owned==true){
 			payRent(player, allProperties[25].owner, allProperties[25].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[25].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[25]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[25]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[25]);
 		}
 	} break; 
 	case 2: System.out.println(chanceDescriptions[2]); 
 	for(int i = 0; i < playerList.length; i++){
 		if(playerList[i] == player){
-			
 		}
 		else{
 			playerList[i].moneyBalance += 50;
@@ -1019,76 +673,36 @@ static void drawChance (player player) {
 			player.moneyBalance += 200;
 		}
 		player.boardPosition = 5;
-		if(allProperties[2].owned=true){
+		if(allProperties[2].owned==true){
 			payRent(player, allProperties[2].owner, allProperties[2].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[2].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[2]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[2]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[2]);
 		}
 	} 
 	else if(player.boardPosition >= 5 && player.boardPosition < 15){
 		player.boardPosition = 15;
-		if(allProperties[10].owned=true){
+		if(allProperties[10].owned==true){
 			payRent(player, allProperties[10].owner, allProperties[10].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[10].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[10]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[10]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[10]);
 		}
 	} else if(player.boardPosition >= 15 && player.boardPosition < 25){
 		player.boardPosition = 25;
-		if(allProperties[10].owned=true){
+		if(allProperties[17].owned==true){
 			payRent(player, allProperties[17].owner, allProperties[17].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[17].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[17]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[17]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[17]);
 		}
 	} else {
 		player.boardPosition = 35;
-		if(allProperties[25].owned=true){
+		if(allProperties[25].owned==true){
 			payRent(player, allProperties[25].owner, allProperties[25].rent*4);
 		}
 		else{
-			System.out.println("Would you like to buy this property for $" + allProperties[25].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[25]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[25]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[25]);
 		}
 	} break; 
 	case 6: System.out.println(chanceDescriptions[6]); player.moneyBalance += 50; break; 
@@ -1097,23 +711,11 @@ static void drawChance (player player) {
 	if(player.boardPosition == 4){
 		player.moneyBalance -= 200;
 		System.out.println("You paid $200 in income tax!");
-		//have to make sure switch excutes in roll method
 	}
 	else if(player.boardPosition == 19){
 		System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName); 
 		if(allProperties[13].owned==false){
-			//first, need to allow user to buy property if desired, then allow them to auction the property if not
-			System.out.println("Would you like to buy this property for $" + allProperties[13].buyPrice);
-			Scanner sc = new Scanner(System.in);
-			String command = sc.next();
-			switch(command){
-			case "Yes": 
-				buyProperty(player, allProperties[13]);
-				break;
-			case "No": 
-				auctionProperty(allProperties[13]); break;
-			default: System.out.println("Please enter a valid command");
-			}
+			manageUnownedProperty(player, allProperties[13]);
 		}
 		else{
 			 payRent(player, allProperties[13].owner, allProperties[13].rent); 
@@ -1128,16 +730,30 @@ static void drawChance (player player) {
 	}
 	else{
 		player.boardPosition = 24;
-	} break; //again make sure switch executes
+	} 
+	System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName); 
+	if(allProperties[16].owned==false){
+		manageUnownedProperty(player, allProperties[16]);
+	}
+	else{
+		 payRent(player, allProperties[16].owner, allProperties[16].rent); 
+	} break; 
 	case 10: System.out.println(chanceDescriptions[10]); if(player.boardPosition > 11){
 		player.moneyBalance += 200;
 		player.boardPosition = 11;
 	}
 	else{
 		player.boardPosition = 11;
-	} break; //again make sure switch executes
+	} 
+	System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName); 
+	if(allProperties[6].owned==false){
+		manageUnownedProperty(player, allProperties[6]);
+	}
+	else{
+		 payRent(player, allProperties[6].owner, allProperties[6].rent); 
+	} break; 
 	case 11: System.out.println(chanceDescriptions[11]); player.moneyBalance -= 15; break; 
-	case 12: System.out.println(chanceDescriptions[12]); player.boardPosition = 39; 
+	case 12: System.out.println(chanceDescriptions[12]); player.boardPosition = 39; break;
 	case 13: System.out.println(chanceDescriptions[13]); player.boardPosition = 0; player.moneyBalance +=200; break;
 	case 14: System.out.println(chanceDescriptions[14]); if(player.boardPosition > 5){
 		player.moneyBalance += 200;
@@ -1145,7 +761,14 @@ static void drawChance (player player) {
 	}
 	else{
 		player.boardPosition = 5;
-	} break; //again make sure switch executes
+	} 
+	System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName); 
+	if(allProperties[2].owned==false){
+		manageUnownedProperty(player, allProperties[2]);
+	}
+	else{
+		 payRent(player, allProperties[2].owner, allProperties[2].rent); 
+	} break; 
 	case 15: System.out.println(chanceDescriptions[15]); break; //again have to integrate houses, probably using loops
 	}
 }
