@@ -97,7 +97,7 @@ static void game(player currentPlayer) {
 			break;
 		case "barter": barter(currentPlayer); break;
 		case "property management": propertyManagement(currentPlayer); break;
-		case "end turn": if(currentPlayer.rollTurn==true) System.out.println("Please roll before ending your turn"); 
+		case "end turn": if(currentPlayer.rollTurn==true) System.out.println("Please roll before ending your turn"); //just in case a player has not actually rolled yet
 			else currentPlayer.turn = false; break;
 		default: System.out.println("invalid command.");
  		}
@@ -117,31 +117,32 @@ static void roll(player player) {
 	int doubletracker = 0;
 	
 	while(player.rollTurn){
-	dice1 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1);
+	dice1 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1); //gets a random number 1 through six inclusive
 	System.out.println("Dice one is " + dice1);
 	dice2 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1);
 	System.out.println("Dice two is " + dice2);
-	int movement = dice1+dice2;
+	int movement = dice1+dice2; //roll two dice per turn
 	
-	boolean tempjailtrack = false;
+	boolean tempjailtrack = false; //this is made true if a player rolls doubles and the amount of doubles must be tracked
 	
-	if(doubletracker == 3){
+	//A double means that you roll theb same value for each dice, you can roll again if you roll doubles
+	if(doubletracker == 3){ //if your roll three doubles in a row, you go to jail!
 		player.boardPosition = 10;
 		player.inJail = true; 
 		player.rollTurn = false;
-		break;
+		break; //roll method ends if you go to jail
 	}
 	
-	if(player.inJail == false){
+	if(player.inJail == false){ //if you aren't in jail, you move on the board
 		player.boardPosition += movement;
-		tempjailtrack = true;
+		tempjailtrack = true; //start tracking amount of doubles rolled
 	}
-	if(player.boardPosition > 39){
+	if(player.boardPosition > 39){ //if the player passes the GO square, they get $200
 		player.moneyBalance += 200;
 		player.boardPosition -= 40;
 	}
-	else if(player.inJail == true){
-		if(dice1==dice2){
+	else if(player.inJail == true){ //Need to give player the option to pay at any time to get out of jail
+		if(dice1==dice2){ //player has to roll doubles to get out of jail, they have three chances to do so
 			player.boardPosition = 10 + movement;
 			player.inJail = false;
 			player.jailCounter = 0;
@@ -150,6 +151,7 @@ static void roll(player player) {
 				//users for get out of free cards
 				else if(player.JailFreeCards >= 1){
 				Scanner sc = new Scanner(System.in);
+				System.out.println("Would you like to use a get out of jail free card? (Yes/No)");
 				String command = sc.nextLine();
 				switch(command){
 				case "Yes": player.inJail=false;
@@ -160,18 +162,18 @@ static void roll(player player) {
 		else if (player.jailCounter < 3){
 			//do nothing if neither condition of being freed from jail is met
 		}
-		else if (player.jailCounter == 3){
+		else if (player.jailCounter == 3){ //if the player fails to roll doubles to get put of jail in three turns, the pay $50 and get out
 			player.inJail = false;
 			player.moneyBalance -= 50;
 			player.boardPosition = 10 + movement;
 			player.jailCounter = 0; 
 		}
 	}
-	switch(player.boardPosition){
+	switch(player.boardPosition){ //correspondng square data is in main method, built using constructor
 	case 0: System.out.println("You are at board position " + player.boardPosition + ", Pass Go, collect $200!"); break;
 	case 1: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[0].propertyName); 
 		if(allProperties[0].owned==false){
-			manageUnownedProperty(player, allProperties[0]); 
+			manageUnownedProperty(player, allProperties[0]); //this method is used to decide if a player buys or auctions property
 		}
 		else{
 			 payRent(player, allProperties[0].owner, allProperties[0].rent); 
@@ -390,7 +392,7 @@ static void roll(player player) {
 		int temp2 = 3 -temp;
 		System.out.println("You are in jail! You have rolled " + temp + " times in jail. You have " + temp2 + " rolls remaining in jail.");
 	}
-	if(dice1==dice2 && tempjailtrack == true){
+	if(dice1==dice2 && tempjailtrack == true){ //tracks amount of doubles rolled in jail
 		doubletracker += 1;
 		continue;
 	}
@@ -426,13 +428,13 @@ static void manageUnownedProperty(player player, property property){
 
 static void buyProperty(player player, property property){
 	property.owned = true;
-	property.owner = player;
-	player.moneyBalance -= property.buyPrice;
+	property.owner = player; //property is transfered to player
+	player.moneyBalance -= property.buyPrice; //player pays required funds
 	//prints out the property bought and now account balance
 	System.out.println(player.playerName + " has bought " + property.propertyName + " for $" + property.buyPrice + " and now has an account balance of " + player.moneyBalance);
 	//add the property to player's owned property's array
 	if(player.ownedProperties.length == 0 || player.ownedProperties == null){
-		property [] temp = new property[1];
+		property [] temp = new property[1]; //new owned properties list is created if this is the player's first property
 		temp[0] = property;
 		player.ownedProperties = temp;
 	}
@@ -456,12 +458,12 @@ static void buyProperty(player player, property property){
 	}
 }
 
-static void auctionProperty(property property){
+static void auctionProperty(property property){ //players bid for property
 	System.out.println("You have opted not to buy the property and the property will go to auction! Beginning auction now!");
 	boolean tempvar = true;
 	int tempprice = 0;
 	player templeader = null;
-	int counter = 0;
+	int counter = 0; // this will equal the player list length if one player outbids the others
 	
 	while(tempvar){
 		for(int i = 0; i < playerList.length; i++){
@@ -496,8 +498,8 @@ static void auctionProperty(property property){
 	}
 	property.owned = true;
 	property.owner = templeader;
-	templeader.moneyBalance -= tempprice;
-	if(templeader.ownedProperties.length == 0 || templeader.ownedProperties == null){
+	templeader.moneyBalance -= tempprice; //property is transfered and player pays their auction bid
+	if(templeader.ownedProperties.length == 0 || templeader.ownedProperties == null){ //same structure for buying properties
 		property [] temp = new property[1];
 		temp[0] = property;
 		templeader.ownedProperties = temp;
@@ -523,7 +525,7 @@ static void auctionProperty(property property){
 }
 static void payRent(player payer, player reciever, int amount) {
 	if(payer == reciever){
-		
+		//player does not pay their own rent
 	}
 	else{
 		payer.moneyBalance -= amount; 
@@ -531,23 +533,23 @@ static void payRent(player payer, player reciever, int amount) {
 		System.out.println(payer.playerName + " has payed $" + amount + " to " + reciever.playerName + " in rent!");
 	}
 }
-static void rollDice() {
+static void rollDice() { //method is not used 
 	dice1 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1);
 	dice2 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1);
 }
-void useGetOutOfJailFree (player player) { 
+void useGetOutOfJailFree (player player) { //not used
 	player.inJail = false;
 	player.JailFreeCards -= 1;
 }
 
-void passGo(player player) {
+void passGo(player player) { //not used
 	player.moneyBalance += 200;
 }
 
 //community chest deck
-static void drawCommunityChest (player player) {
+static void drawCommunityChest (player player) { //corresponding card data can be found in main method
 	Random rand = new Random();
-	int card = rand.nextInt(16);
+	int card = rand.nextInt(16); //draw random card
 	
 	switch (card) {
 	case 0: System.out.println(communityChestDescriptions[0]); player.moneyBalance += 100; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
@@ -583,6 +585,7 @@ static void drawCommunityChest (player player) {
 		//to accomodate for this card method
 		//Tried using instance of and had some troubles, may have to make a method
 		//Note that not all properties have the property int houses or boolean hotels
+		//this will be finished along with property management section
 	}
 	System.out.println("This method is still being built, will not change player's money balance yet!"); break; //have to access properties for this method using loop
 	case 15: System.out.println(communityChestDescriptions[15]); player.moneyBalance += 200; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
@@ -590,22 +593,24 @@ static void drawCommunityChest (player player) {
 }
 
 //chance deck
+//most of these cards involve moving to a new space and paying increased rent
+//refer to main method for particulars
 static void drawChance (player player) {
 	Random rand = new Random();
-	int card = rand.nextInt(16);
+	int card = rand.nextInt(16); //draw random card 
 	
-	switch (card) {
+	switch (card) { //corresponding card data found in main method
 	case 0: System.out.println(chanceDescriptions[0]); if(player.boardPosition >= 12 && player.boardPosition < 28){
 		player.boardPosition = 28;
 		if(allProperties[20].owned==true){
-			payRent(player, allProperties[20].owner, allProperties[20].rent*4);
+			payRent(player, allProperties[20].owner, allProperties[20].rent*4); //pay more rent if property is owned
 		}
 		else{
-			manageUnownedProperty(player, allProperties[20]);
+			manageUnownedProperty(player, allProperties[20]); //just in case property is unowned
 		}
 	} else{
 		if(player.boardPosition > 27){
-			player.moneyBalance +=200;
+			player.moneyBalance +=200; //player passes go
 		}
 		player.boardPosition = 12; 
 		if(allProperties[7].owned==true){
@@ -827,6 +832,7 @@ static void drawChance (player player) {
 	
 	
 	// Going to list all of the methods for cards here
+	//none of these will likely be used so ignore
 	class cardMethods { 
 		void addMoney(player player, int amount) { //chance uses this too
 			player.moneyBalance += amount;
@@ -954,23 +960,23 @@ static void drawChance (player player) {
 		monopolyPieces[7] = "dinosaur";
 	
 		//start of the program
-		player firstPlayer = startGame();
+		player firstPlayer = startGame(); //get first player
 		gameon = true;
 		while(gameon){
-			int a = 0; 
-			for(int i = 0; i < playerList.length; i++){
+			int a = 0; //created to store the index of the first player
+			for(int i = 0; i < playerList.length; i++){ //loop advances to first player in list so they can go first
 				if(playerList[i] == firstPlayer){
-					break;
+					break; //exit loop once index of first player is found
 				}
 				else{
 					a +=1;
 				}
 			}
-			for(int i = a; i < playerList.length; i++){
+			for(int i = a; i < playerList.length; i++){ //start first round from the index of firdt player
 				game(playerList[i]);
 			}
 			boolean wholegame = true;
-			while(wholegame){
+			while(wholegame){ //after the end of player list has been reached from the index of the first player, game can advamce normally
 				for(int i = 0; i < playerList.length; i++){
 					game(playerList[i]);
 				}
