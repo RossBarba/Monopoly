@@ -409,7 +409,209 @@ static void barter(player player) {
 
 //players can buy hotels/houses and/or mortgage properties
 static void propertyManagement(player player) {
-	
+	boolean managing = true;
+	while(managing) {
+		Scanner sc = new Scanner(System.in);
+		System.out.print(player.playerName + " ,what would you like to do? (Buy, Sell, Mortgage, Unmortgage, Exit)");
+		String command = sc.next();
+		
+		//these need to be defined here because they are used for several options in menu
+		String currentStreetName, currentPropertyName; //user enters input
+		property currentProperty = null;
+		street currentStreet = null; //used to store and manipulate current street object
+		boolean ownsProperty = false; //used to determine if the user has entered a valid street
+		int currentStreetIndex, currentPropertyIndex = 0; //index is needed later to save potential changes made to street
+		
+		switch(command) {
+		case "Buy":
+			System.out.println("You own the following streets:");
+			for(int i = 0; i < player.ownedProperties.length; i++) { //only lists properties where houses can be built
+				if (player.ownedProperties[i] instanceof street) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.print("Enter the name of the street you would like to build on:");
+			currentStreetName = sc.nextLine(); //user enters input
+			currentStreet = null; //used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentStreetIndex = 0; //index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentStreetName == player.ownedProperties[i].propertyName) {
+					ownsProperty = true;
+					currentStreet = (street) player.ownedProperties[i];
+					currentStreetIndex = i;
+					break;
+				}
+			}
+			
+			if (ownsProperty) {
+				if (currentStreet.numHouses == 4) { //cannot have more than one hotel.
+					System.out.println("You already have a hotel on " + currentStreet.propertyName + "!");
+					continue; //goes back to switch statement
+				}
+				System.out.println(currentStreet.propertyName + " currently has " + currentStreet.numHouses + " houses.");
+				System.out.println("Each house costs $" + currentStreet.housePrice);
+				
+				System.out.print("How many houses would you like to purchase? ");
+				int desiredHouses = sc.nextInt(); //gather user input
+				//player has to afford the desired houses and not be building over the limit
+				if(desiredHouses * currentStreet.housePrice > player.moneyBalance || desiredHouses + currentStreet.numHouses > 4) {
+					System.out.println("You either have insufficient funds or are trying to build too many houses!");
+					continue;
+				} else {
+					currentStreet.numHouses += desiredHouses; //add the houses
+					player.moneyBalance -= (desiredHouses * currentStreet.housePrice); //deduct the required funds
+					//change the rent cost for property
+					player.ownedProperties[currentStreetIndex] = currentStreet; //save new street data to player property list
+				}
+				
+			} else System.out.println("You have entered a property you do not own or that is not a street"); //if street is invalid
+			break;
+		case "Sell": 
+			System.out.println("You own the following streets:");
+			for(int i = 0; i < player.ownedProperties.length; i++) { //only lists properties where houses can be built
+				if (player.ownedProperties[i] instanceof street) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.print("Enter the name of the street you would like to sell improvements on:");
+			currentStreetName = sc.nextLine(); //user enters input
+			currentStreet = null; //used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentStreetIndex = 0; //index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentStreetName == player.ownedProperties[i].propertyName) {
+					ownsProperty = true;
+					currentStreet = (street) player.ownedProperties[i];
+					currentStreetIndex = i;
+					break;
+				}
+			}
+			
+			if (ownsProperty) {
+				if (currentStreet.numHouses == 4)  {
+					System.out.println("You have a hotel on " + currentStreet.propertyName + ".");
+				} else {
+					System.out.println(currentStreet.propertyName + " currently has " + currentStreet.numHouses + " houses.");
+				}
+				
+				System.out.println("You may sell each house back to the bank for $" + (currentStreet.housePrice / 2));
+				
+				System.out.print("How many houses would you like to sell? ");
+				int desiredHouses = sc.nextInt(); //gather user input
+				//player has to afford the desired houses and not be building over the limit
+				if(desiredHouses > currentStreet.numHouses) {
+					System.out.println("You are tyring to sell more houses than you have!");
+					continue;
+				} else {
+					currentStreet.numHouses -= desiredHouses; //remove the houses
+					player.moneyBalance += (desiredHouses * (currentStreet.housePrice / 2)); //give refund back to player
+					//change the rent cost for property
+					player.ownedProperties[currentStreetIndex] = currentStreet; //save new street data to player property list
+				}
+				
+			} else System.out.println("You have entered a property you do not own or that is not a street"); //if street is invalid
+			break;
+		case "Mortgage": 
+			System.out.println("Here are the properties that are not currently mortgaged:");
+			for (int i = 0; i < player.ownedProperties.length; i++) { //prints unmortgaged properties
+				if (!player.ownedProperties[i].mortgaged) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.print("Which property would you like to mortgage? ");
+			//need to reset these variables because we could be dealing with a street or property class
+			currentPropertyName = sc.nextLine(); //user enters input
+			currentProperty = null;
+			currentStreet = null;//used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentPropertyIndex = 0;
+			currentStreetIndex = 0;//index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentPropertyName == player.ownedProperties[i].propertyName) {
+					ownsProperty = true;
+					if (player.ownedProperties[i] instanceof street) { //use street variables for street 
+						currentStreetName = currentPropertyName;
+						currentStreet = (street) player.ownedProperties[i];
+						currentStreetIndex = i;
+						break;
+					} else { //use property variables for property
+						currentProperty = player.ownedProperties[i];
+						currentPropertyIndex = i;
+						break;
+					}
+				}
+			}
+			if (ownsProperty) {
+				if (currentProperty == null) { //null current property means we have a street
+					if (currentStreet.numHouses > 0) { 
+						System.out.println("You must sell all houses on this property before you can mortgage it.");
+					} else { 
+						currentStreet.mortgaged = true;
+						player.moneyBalance += currentStreet.mortgagePrice;
+						player.ownedProperties[currentStreetIndex] = currentStreet;
+					}
+				} else { //not null current property means we have a property
+					currentProperty.mortgaged = true;
+					player.moneyBalance += currentProperty.mortgagePrice;
+					player.ownedProperties[currentPropertyIndex] = currentProperty;
+				}
+			} else System.out.println("You have entered a property you do not own or is already mortgaged");
+			break;
+		case "Unmortgage": 
+			System.out.println("Here are the properties that are currently mortgaged:");
+			for (int i = 0; i < player.ownedProperties.length; i++) { //prints unmortgaged properties
+				if (player.ownedProperties[i].mortgaged) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.print("Which property would you like to unmortgage? ");
+			//need to reset these variables because we could be dealing with a street or property class
+			currentPropertyName = sc.nextLine(); //user enters input
+			currentProperty = null;
+			currentStreet = null;//used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentPropertyIndex = 0;
+			currentStreetIndex = 0;//index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentPropertyName == player.ownedProperties[i].propertyName) {
+					ownsProperty = true;
+					if (player.ownedProperties[i] instanceof street) { //use street variables for street 
+						currentStreetName = currentPropertyName;
+						currentStreet = (street) player.ownedProperties[i];
+						currentStreetIndex = i;
+						break;
+					} else { //use property variables for property
+						currentProperty = player.ownedProperties[i];
+						currentPropertyIndex = i;
+						break;
+					}
+				}
+			}
+			if (ownsProperty) {
+				if (currentProperty == null) { //null current property means we have a street
+					if (player.moneyBalance < (currentStreet.mortgagePrice + (currentStreet.mortgagePrice / 10))) {
+						System.out.println("You do not have sufficient funds to unmortage this property");
+					} else {
+						currentStreet.mortgaged = false;
+						player.moneyBalance -= (currentStreet.mortgagePrice + (currentStreet.mortgagePrice / 10));
+						player.ownedProperties[currentStreetIndex] = currentStreet;
+					}
+				} else { //not null current property means we have a property
+					if (player.moneyBalance < (currentProperty.mortgagePrice + (currentProperty.mortgagePrice / 10))) {
+						System.out.println("You do not have sufficient funds to unmortage this property");
+					} else {
+						currentProperty.mortgaged = false;
+						player.moneyBalance -= (currentProperty.mortgagePrice + (currentProperty.mortgagePrice / 10));
+						player.ownedProperties[currentPropertyIndex] = currentProperty;
+					}
+				}
+			} else System.out.println("You have entered a property you do not own or is not mortgaged");
+			break;
+		case "Exit": managing = false; break;
+		default: System.out.println("Please enter valid command");
+		}
+		}
 }
 
 static void manageUnownedProperty(player player, property property){
