@@ -82,10 +82,36 @@ static player startGame(){ //returns the player that will be going first
 //bartering with players
 //property management (buying houses/hotels, mortgaging)
 static void game(player currentPlayer) {
+	System.out.println(currentPlayer.playerName + " it is your turn!");
 	currentPlayer.rollTurn = true;
 	currentPlayer.turn=true;
+	if(currentPlayer.JailFreeCards > 0 && currentPlayer.inJail){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Would you like to use a get out of jail free card? (Yes/No)");
+		String command = sc.nextLine();
+		switch(command){
+		case "Yes": currentPlayer.inJail=false; break;
+		default: System.out.println("You have forgone using your get out of jail free card!");
+		}
+		}
+	if(currentPlayer.inJail==true && currentPlayer.moneyBalance >= 50 && currentPlayer.jailCounter < 3){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("You are in jail! Would you like to pay $50 to get out?");
+		String jailCommand = sc.nextLine();
+		switch(jailCommand){
+		case "Yes": currentPlayer.inJail = false; System.out.println("You paid $50 to get out of jail and now have a balance of " + currentPlayer.moneyBalance); break;
+		default: System.out.println("You opted not to pay $50 and will try to roll to get out of jail");
+		}
+	}
+	if(currentPlayer.inJail==true && currentPlayer.moneyBalance >= 50 && currentPlayer.jailCounter == 3){
+		System.out.println("This is your third roll in jail, try and roll doubles to get out for free, otherwise pay $50");
+	}
+	if(currentPlayer.inJail == true && currentPlayer.moneyBalance < 50){
+		//have to make this method implement currentAssets
+		System.out.println("You are in jail and do not have enough money to get out! You must try to roll doubles to get out of jail!");
+	}
 	while(currentPlayer.turn) {
-		System.out.println(currentPlayer.playerName +", what action would you like to take? (roll, barter, property management)");
+		System.out.println(currentPlayer.playerName +", what action would you like to take? (roll, barter, property management, end turn)");
 		Scanner sc = new Scanner(System.in);
 		String command = sc.nextLine();
 		switch (command) {
@@ -115,6 +141,7 @@ static void game(player currentPlayer) {
 //free parking: 20
 static void roll(player player) { 
 	int doubletracker = 0;
+	boolean tempjailtrack = false; //this is made true if a player rolls doubles and the amount of doubles must be tracked
 	
 	while(player.rollTurn){
 	dice1 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1); //gets a random number 1 through six inclusive
@@ -123,20 +150,24 @@ static void roll(player player) {
 	System.out.println("Dice two is " + dice2);
 	int movement = dice1+dice2; //roll two dice per turn
 	
-	boolean tempjailtrack = false; //this is made true if a player rolls doubles and the amount of doubles must be tracked
-	
-	//A double means that you roll theb same value for each dice, you can roll again if you roll doubles
-	if(doubletracker == 3){ //if your roll three doubles in a row, you go to jail!
-		player.boardPosition = 10;
-		player.inJail = true; 
-		player.rollTurn = false;
-		break; //roll method ends if you go to jail
-	}
-	
 	if(player.inJail == false){ //if you aren't in jail, you move on the board
 		player.boardPosition += movement;
 		tempjailtrack = true; //start tracking amount of doubles rolled
 	}
+	
+	if(dice1==dice2 && tempjailtrack==true){
+		doubletracker += 1;
+		if(doubletracker == 3){ //if your roll three doubles in a row, you go to jail!
+			System.out.println("You rolled three doubles in a row, go to Jail!");
+			player.boardPosition = 10;
+			player.inJail = true; 
+			player.rollTurn = false;
+			continue; //roll method ends if you go to jail
+		}
+	}
+	
+	//A double means that you roll the same value for each dice, you can roll again if you roll doubles
+	
 	if(player.boardPosition > 39){ //if the player passes the GO square, they get $200
 		player.moneyBalance += 200;
 		player.boardPosition -= 40;
@@ -147,18 +178,7 @@ static void roll(player player) {
 			player.inJail = false;
 			player.jailCounter = 0;
 		}
-		//will also need to add a condtional statement to query 
-				//users for get out of free cards
-				else if(player.JailFreeCards >= 1){
-				Scanner sc = new Scanner(System.in);
-				System.out.println("Would you like to use a get out of jail free card? (Yes/No)");
-				String command = sc.nextLine();
-				switch(command){
-				case "Yes": player.inJail=false;
-				player.boardPosition = 10 + movement;
-				player.jailCounter = 0;
-				}
-				}
+		
 		else if (player.jailCounter < 3){
 			//do nothing if neither condition of being freed from jail is met
 		}
@@ -176,7 +196,7 @@ static void roll(player player) {
 			manageUnownedProperty(player, allProperties[0]); //this method is used to decide if a player buys or auctions property
 		}
 		else{
-			 payRent(player, allProperties[0].owner, allProperties[0].rent); 
+			 payRent(player, allProperties[0].owner, allProperties[0]); 
 		} break;
 	case 2: System.out.println("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now."); 
 	drawCommunityChest(player); break;
@@ -185,7 +205,7 @@ static void roll(player player) {
 			manageUnownedProperty(player, allProperties[1]);
 		}
 	else{
-		 payRent(player, allProperties[1].owner, allProperties[1].rent); 
+		 payRent(player, allProperties[1].owner, allProperties[1]); 
 	} break;
 	case 4: System.out.println("You are at board position " + player.boardPosition + ", income tax, pay $200!"); player.moneyBalance -= 200; break;
 	case 5: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName); 
@@ -193,14 +213,14 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[2]);
 	}
 	else{
-		 payRent(player, allProperties[2].owner, allProperties[2].rent); 
+		 payRent(player, allProperties[2].owner, allProperties[2]); 
 	} break;
 	case 6: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[3].propertyName); 
 	if(allProperties[3].owned==false){
 		manageUnownedProperty(player, allProperties[3]);
 	}
 	else{
-		 payRent(player, allProperties[3].owner, allProperties[3].rent); 
+		 payRent(player, allProperties[3].owner, allProperties[3]); 
 	} break;
 	case 7: System.out.println("You are at board position " + player.boardPosition + ", chance, drawing a chance card now."); 
 	drawChance(player); break;
@@ -209,14 +229,14 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[4]);
 	}
 	else{
-		 payRent(player, allProperties[4].owner, allProperties[4].rent); 
+		 payRent(player, allProperties[4].owner, allProperties[4]); 
 	} break;
 	case 9: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[5].propertyName); 
 	if(allProperties[5].owned==false){
 		manageUnownedProperty(player, allProperties[5]);
 	}
 	else{
-		 payRent(player, allProperties[5].owner, allProperties[5].rent); 
+		 payRent(player, allProperties[5].owner, allProperties[5]); 
 	} break;
 	case 10: if(player.inJail == false) System.out.println("You are just visiting jail"); break;
 	case 11: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName); 
@@ -224,42 +244,42 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[6]);
 	}
 	else{
-		 payRent(player, allProperties[6].owner, allProperties[6].rent); 
+		 payRent(player, allProperties[6].owner, allProperties[6]); 
 	} break;
 	case 12: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[7].propertyName); 
 	if(allProperties[7].owned==false){
 		manageUnownedProperty(player, allProperties[7]);
 	}
 	else{
-		 payRent(player, allProperties[7].owner, allProperties[7].rent); 
+		 payRent(player, allProperties[7].owner, allProperties[7]); 
 	} break;
 	case 13: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[8].propertyName); 
 	if(allProperties[8].owned==false){
 		manageUnownedProperty(player, allProperties[8]);
 	}
 	else{
-		 payRent(player, allProperties[8].owner, allProperties[8].rent); 
+		 payRent(player, allProperties[8].owner, allProperties[8]); 
 	} break;
 	case 14: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[9].propertyName); 
 	if(allProperties[9].owned==false){
 		manageUnownedProperty(player, allProperties[9]);
 	}
 	else{
-		 payRent(player, allProperties[0].owner, allProperties[9].rent); 
+		 payRent(player, allProperties[0].owner, allProperties[9]); 
 	} break;
 	case 15: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[10].propertyName); 
 	if(allProperties[10].owned==false){
 		manageUnownedProperty(player, allProperties[10]);
 	}
 	else{
-		 payRent(player, allProperties[10].owner, allProperties[10].rent); 
+		 payRent(player, allProperties[10].owner, allProperties[10]); 
 	} break;
 	case 16: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[11].propertyName); 
 	if(allProperties[11].owned==false){
 		manageUnownedProperty(player, allProperties[11]);
 	}
 	else{
-		 payRent(player, allProperties[11].owner, allProperties[11].rent); 
+		 payRent(player, allProperties[11].owner, allProperties[11]); 
 	} break;
 	case 17: System.out.println("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now."); 
 	drawCommunityChest(player); break;
@@ -268,14 +288,14 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[12]);
 	}
 	else{
-		 payRent(player, allProperties[12].owner, allProperties[12].rent); 
+		 payRent(player, allProperties[12].owner, allProperties[12]); 
 	} break;
 	case 19: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName); 
 	if(allProperties[13].owned==false){
 		manageUnownedProperty(player, allProperties[13]);
 	}
 	else{
-		 payRent(player, allProperties[13].owner, allProperties[13].rent); 
+		 payRent(player, allProperties[13].owner, allProperties[13]); 
 	} break;
 	case 20: System.out.println("You are at board position " + player.boardPosition + ", free parking, enjoy your stay!"); break;
 	case 21: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[14].propertyName); 
@@ -283,7 +303,7 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[14]);
 	}
 	else{
-		 payRent(player, allProperties[14].owner, allProperties[14].rent); 
+		 payRent(player, allProperties[14].owner, allProperties[14]); 
 	} break;
 	case 22: System.out.println("You are at board position " + player.boardPosition + ", chance, drawing a chance card now."); 
 	drawChance(player); break;
@@ -292,49 +312,49 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[15]);
 	}
 	else{
-		 payRent(player, allProperties[15].owner, allProperties[15].rent); 
+		 payRent(player, allProperties[15].owner, allProperties[15]); 
 	} break;
 	case 24: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName); 
 	if(allProperties[16].owned==false){
 		manageUnownedProperty(player, allProperties[16]);
 	}
 	else{
-		 payRent(player, allProperties[16].owner, allProperties[16].rent); 
+		 payRent(player, allProperties[16].owner, allProperties[16]); 
 	} break;
 	case 25: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[17].propertyName); 
 	if(allProperties[17].owned==false){
 		manageUnownedProperty(player, allProperties[17]);
 	}
 	else{
-		 payRent(player, allProperties[17].owner, allProperties[17].rent); 
+		 payRent(player, allProperties[17].owner, allProperties[17]); 
 	} break;
 	case 26: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[18].propertyName); 
 	if(allProperties[18].owned==false){
 		manageUnownedProperty(player, allProperties[18]);
 	}
 	else{
-		 payRent(player, allProperties[18].owner, allProperties[18].rent); 
+		 payRent(player, allProperties[18].owner, allProperties[18]); 
 	} break;
 	case 27: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[19].propertyName); 
 	if(allProperties[19].owned==false){
 		manageUnownedProperty(player, allProperties[19]);
 	}
 	else{
-		 payRent(player, allProperties[19].owner, allProperties[19].rent); 
+		 payRent(player, allProperties[19].owner, allProperties[19]); 
 	} break;
 	case 28: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[20].propertyName); 
 	if(allProperties[20].owned==false){
 		manageUnownedProperty(player, allProperties[20]);
 	}
 	else{
-		 payRent(player, allProperties[20].owner, allProperties[20].rent); 
+		 payRent(player, allProperties[20].owner, allProperties[20]); 
 	} break;
 	case 29: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[21].propertyName); 
 	if(allProperties[21].owned==false){
 		manageUnownedProperty(player, allProperties[21]);
 	}
 	else{
-		 payRent(player, allProperties[21].owner, allProperties[21].rent); 
+		 payRent(player, allProperties[21].owner, allProperties[21]); 
 	} break;
 	case 30: player.inJail = true; System.out.println("You landed on go to jail, go to jail immediately!"); break;
 	case 31: System.out.println("You are at board position " + player.boardPosition + " " + allProperties[22].propertyName); 
@@ -342,14 +362,14 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[22]);
 	}
 	else{
-		 payRent(player, allProperties[22].owner, allProperties[22].rent); 
+		 payRent(player, allProperties[22].owner, allProperties[22]); 
 	} break;
 	case 32: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[23].propertyName); 
 	if(allProperties[23].owned==false){
 		manageUnownedProperty(player, allProperties[23]);
 	}
 	else{
-		 payRent(player, allProperties[23].owner, allProperties[23].rent); 
+		 payRent(player, allProperties[23].owner, allProperties[23]); 
 	} break;
 	case 33: System.out.println("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now."); 
 	drawCommunityChest(player); break;
@@ -358,14 +378,14 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[24]);
 	}
 	else{
-		 payRent(player, allProperties[24].owner, allProperties[24].rent); 
+		 payRent(player, allProperties[24].owner, allProperties[24]); 
 	} break;
 	case 35: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[25].propertyName); 
 	if(allProperties[25].owned==false){
 		manageUnownedProperty(player, allProperties[25]);
 	}
 	else{
-		 payRent(player, allProperties[25].owner, allProperties[25].rent); 
+		 payRent(player, allProperties[25].owner, allProperties[25]); 
 	} break;
 	case 36: System.out.println("You are at board position " + player.boardPosition + ", chance, drawing a chance card now."); 
 	drawChance(player); break;
@@ -374,7 +394,7 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[26]);
 	}
 	else{
-		 payRent(player, allProperties[26].owner, allProperties[26].rent); 
+		 payRent(player, allProperties[26].owner, allProperties[26]); 
 	} break;
 	case 38: System.out.println("You are at board position " + player.boardPosition + ", luxury tax. Pay $100!"); player.moneyBalance-=100; break;
 	case 39: System.out.println("You are at board position " + player.boardPosition + ", " + allProperties[27].propertyName); 
@@ -382,7 +402,7 @@ static void roll(player player) {
 		manageUnownedProperty(player, allProperties[27]);
 	}
 	else{
-		 payRent(player, allProperties[27].owner, allProperties[27].rent); 
+		 payRent(player, allProperties[27].owner, allProperties[27]); 
 	} break;
 	}
 	if(player.inJail==true){
@@ -393,10 +413,14 @@ static void roll(player player) {
 		System.out.println("You are in jail! You have rolled " + temp + " times in jail. You have " + temp2 + " rolls remaining in jail.");
 	}
 	if(dice1==dice2 && tempjailtrack == true){ //tracks amount of doubles rolled in jail
-		doubletracker += 1;
 		continue;
 	}
-	System.out.println(player.playerName + " has exhaused all rolls at board space " + player.boardPosition + " with a money balance of $" + player.moneyBalance);
+	if(player.moneyBalance == -1){
+		System.out.println(player.playerName + " you have gone bankrupt! Please end turn, all other methods will become unavailable!");
+	}
+	else{
+		System.out.println(player.playerName + " has exhaused all rolls at board space " + player.boardPosition + " with a money balance of $" + player.moneyBalance);
+	}
 	doubletracker = 0;
 	player.rollTurn = false;
 	}
@@ -404,24 +428,403 @@ static void roll(player player) {
 
 //Players are able to negotiate for different items (properties, money, cards) and can barter with those same items
 static void barter(player player) {
-	
+	System.out.println("Barter method under development! Please return later!");
+	//first need to import a scanner object
+	//then we need to use this scanner object to ask for user input
+	//specifically, which player you would like to barter with
+	//then, need to use a for loop most likely, where, if the player's name
+	//.equals the input, that player will be selected to barter with
+	//ex.
+	//for(int i = 0; i < playerList.length; i++){
+	//		if(inputName.equals(playerList[i].playerName)){
+	//			method functions go here, probably will need another for loop
+	//			to scan through available properties, will also need some sort of
+	// 			input mechansism (again use scanner) for a player to select properties 
+	//			they would like to trade, using an semi-infinite loop
+	//			
+	//		}
+	//	}
 }
 
 //players can buy hotels/houses and/or mortgage properties
 static void propertyManagement(player player) {
-	
+	boolean managing = true;
+	while(managing) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println(player.playerName + ", what would you like to do? (Buy, Sell, Mortgage, Unmortgage, Exit)");
+		String command = sc.nextLine();
+		
+		//these need to be defined here because they are used for several options in menu
+		String currentStreetName, currentPropertyName; //user enters input
+		property currentProperty = null;
+		street currentStreet = null; //used to store and manipulate current street object
+		boolean ownsProperty = false; //used to determine if the user has entered a valid street
+		int currentStreetIndex, currentPropertyIndex = 0; //index is needed later to save potential changes made to street
+		
+		switch(command) {
+		case "Buy":
+			System.out.println("You own the following streets:");
+			for(int i = 0; i < player.ownedProperties.length; i++) { //only lists properties where houses can be built
+				if (player.ownedProperties[i] instanceof street) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.println("Enter the name of the street you would like to build on:");
+			currentStreetName = sc.nextLine(); //user enters input
+			currentStreet = null; //used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentStreetIndex = 0; //index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentStreetName.equals(player.ownedProperties[i].propertyName)) {
+					ownsProperty = true;
+					currentStreet = (street) player.ownedProperties[i];
+					currentStreetIndex = i;
+					break;
+				}
+			}
+			
+			if (ownsProperty) {
+				if (currentStreet.numHouses == 4) { //cannot have more than one hotel.
+					System.out.println("You already have a hotel on " + currentStreet.propertyName + "!");
+					continue; //goes back to switch statement
+				}
+				System.out.println(currentStreet.propertyName + " currently has " + currentStreet.numHouses + " houses.");
+				System.out.println("Each house costs $" + currentStreet.housePrice);
+				
+				System.out.println("How many houses would you like to purchase? ");
+				int desiredHouses = sc.nextInt(); //gather user input
+				//player has to afford the desired houses and not be building over the limit
+				if(desiredHouses * currentStreet.housePrice > player.moneyBalance || desiredHouses + currentStreet.numHouses > 4) {
+					System.out.println("You either have insufficient funds or are trying to build too many houses!");
+					continue;
+				} else {
+					currentStreet.numHouses += desiredHouses; //add the houses
+					player.moneyBalance -= (desiredHouses * currentStreet.housePrice); //deduct the required funds
+					//change the rent cost for property
+					player.ownedProperties[currentStreetIndex] = currentStreet; //save new street data to player property list
+				}
+				
+			} else System.out.println("You have entered a property you do not own or that is not a street"); //if street is invalid
+			break;
+		case "Sell": 
+			System.out.println("You own the following streets:");
+			for(int i = 0; i < player.ownedProperties.length; i++) { //only lists properties where houses can be built
+				if (player.ownedProperties[i] instanceof street) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.println("Enter the name of the street you would like to sell improvements on: ");
+			currentStreetName = sc.nextLine(); //user enters input
+			currentStreet = null; //used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentStreetIndex = 0; //index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentStreetName.equals(player.ownedProperties[i].propertyName)) {
+					ownsProperty = true;
+					currentStreet = (street) player.ownedProperties[i];
+					currentStreetIndex = i;
+					break;
+				}
+			}
+			
+			if (ownsProperty) {
+				if (currentStreet.numHouses == 4)  {
+					System.out.println("You have a hotel on " + currentStreet.propertyName + ".");
+				} else {
+					System.out.println(currentStreet.propertyName + " currently has " + currentStreet.numHouses + " houses.");
+				}
+				
+				System.out.println("You may sell each house back to the bank for $" + (currentStreet.housePrice / 2));
+				
+				System.out.print("How many houses would you like to sell? ");
+				int desiredHouses = sc.nextInt(); //gather user input
+				//player has to afford the desired houses and not be building over the limit
+				if(desiredHouses > currentStreet.numHouses) {
+					System.out.println("You are tyring to sell more houses than you have!");
+					continue;
+				} else {
+					currentStreet.numHouses -= desiredHouses; //remove the houses
+					player.moneyBalance += (desiredHouses * (currentStreet.housePrice / 2)); //give refund back to player
+					//change the rent cost for property
+					player.ownedProperties[currentStreetIndex] = currentStreet; //save new street data to player property list
+				}
+				
+			} else System.out.println("You have entered a property you do not own or that is not a street"); //if street is invalid
+			break;
+		case "Mortgage": 
+			System.out.println("Here are the properties that are not currently mortgaged:");
+			for (int i = 0; i < player.ownedProperties.length; i++) { //prints unmortgaged properties
+				if (!player.ownedProperties[i].mortgaged) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.println("Which property would you like to mortgage? ");
+			//need to reset these variables because we could be dealing with a street or property class
+			currentPropertyName = sc.nextLine(); //user enters input
+			currentProperty = null;
+			currentStreet = null;//used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentPropertyIndex = 0;
+			currentStreetIndex = 0;//index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentPropertyName.equals(player.ownedProperties[i].propertyName)) {
+					ownsProperty = true;
+					if (player.ownedProperties[i] instanceof street) { //use street variables for street 
+						currentStreetName = currentPropertyName;
+						currentStreet = (street) player.ownedProperties[i];
+						currentStreetIndex = i;
+						break;
+					} else { //use property variables for property
+						currentProperty = player.ownedProperties[i];
+						currentPropertyIndex = i;
+						break;
+					}
+				}
+			}
+			if (ownsProperty) {
+				if (currentProperty == null) { //null current property means we have a street
+					if (currentStreet.numHouses > 0) { 
+						System.out.println("You must sell all houses on this property before you can mortgage it.");
+					} else { 
+						currentStreet.mortgaged = true;
+						player.moneyBalance += (currentStreet.buyPrice/2);
+						player.ownedProperties[currentStreetIndex] = currentStreet;
+					}
+				} else { //not null current property means we have a property
+					currentProperty.mortgaged = true;
+					player.moneyBalance += (currentProperty.buyPrice/2);
+					player.ownedProperties[currentPropertyIndex] = currentProperty;
+				}
+				System.out.println("New player money balance is " + player.moneyBalance);
+			} else System.out.println("You have entered a property you do not own or is already mortgaged");
+			break;
+		case "Unmortgage": 
+			System.out.println("Here are the properties that are currently mortgaged:");
+			for (int i = 0; i < player.ownedProperties.length; i++) { //prints unmortgaged properties
+				if (player.ownedProperties[i].mortgaged) System.out.println(player.ownedProperties[i].propertyName);
+			}
+			
+			System.out.print("Which property would you like to unmortgage? ");
+			//need to reset these variables because we could be dealing with a street or property class
+			currentPropertyName = sc.nextLine(); //user enters input
+			currentProperty = null;
+			currentStreet = null;//used to store and manipulate current street object
+			ownsProperty = false; //used to determine if the user has entered a valid street
+			currentPropertyIndex = 0;
+			currentStreetIndex = 0;//index is needed later to save potential changes made to street
+			
+			for (int i = 0; i < player.ownedProperties.length; i++) { //information is gathered if street is valid
+				if (currentPropertyName.equals(player.ownedProperties[i].propertyName)) {
+					ownsProperty = true;
+					if (player.ownedProperties[i] instanceof street) { //use street variables for street 
+						currentStreetName = currentPropertyName;
+						currentStreet = (street) player.ownedProperties[i];
+						currentStreetIndex = i;
+						break;
+					} else { //use property variables for property
+						currentProperty = player.ownedProperties[i];
+						currentPropertyIndex = i;
+						break;
+					}
+				}
+			}
+			if (ownsProperty) {
+				if (currentProperty == null) { //null current property means we have a street
+					if (player.moneyBalance < ((currentStreet.buyPrice/2) + ((currentStreet.buyPrice/2) / 10))) {
+						System.out.println("You do not have sufficient funds to unmortage this property");
+					} else {
+						currentStreet.mortgaged = false;
+						player.moneyBalance -= ((currentStreet.buyPrice/2) + ((currentStreet.buyPrice/2) / 10));
+						player.ownedProperties[currentStreetIndex] = currentStreet;
+					}
+				} else { //not null current property means we have a property
+					if (player.moneyBalance < ((currentProperty.buyPrice/2) + ((currentProperty.buyPrice/2) / 10))) {
+						System.out.println("You do not have sufficient funds to unmortage this property");
+					} else {
+						currentProperty.mortgaged = false;
+						player.moneyBalance -= ((currentProperty.buyPrice/2) + ((currentProperty.buyPrice/2) / 10));
+						player.ownedProperties[currentPropertyIndex] = currentProperty;
+					}
+				}
+			} else System.out.println("You have entered a property you do not own or is not mortgaged");
+			break;
+		case "Exit": managing = false; break;
+		default: System.out.println("Please enter valid command");
+		}
+		}
 }
 
 static void manageUnownedProperty(player player, property property){
-	System.out.println(property.propertyName + "is unowned, would you like to buy it, or auction it?");
-	boolean tempCommand = true;
-	Scanner sc = new Scanner(System.in);
-	while(tempCommand){
-		String command = sc.nextLine();
-		switch(command){
-		case "Buy": buyProperty(player, property); tempCommand = false; break;
-		case "Auction": auctionProperty(property); tempCommand = false; break;
-		default: System.out.println("Please enter a valid command"); 
+	if(player.moneyBalance < property.buyPrice){
+		Scanner sc = new Scanner(System.in);
+		boolean tempCommand = true;
+		System.out.println("You do not have enough money to buy this property, would you like to sell properties to raise money? (Yes/No)"); 
+		while(tempCommand){
+			String command = sc.nextLine();
+			switch(command){
+			case "Yes": propertyManagement(player); 
+			if(player.moneyBalance < property.buyPrice){
+				System.out.println("You still don't have enough money to buy this property! Would you like to try to raise more money?");
+			} else{
+				System.out.println("You have now raised the needed money to buy " + property.propertyName + "!");
+				buyProperty(player, property);
+				tempCommand = false;
+			} break;
+			case "No": auctionProperty(property); tempCommand = false; break;
+			default: System.out.println("Please enter 'Yes' or 'No'!");
+			}
+		}
+	}
+	else {
+		System.out.println(property.propertyName + " is unowned, would you like to buy it, or auction it?");
+		boolean tempCommand = true;
+		Scanner sc = new Scanner(System.in);
+		while(tempCommand){
+			String command = sc.nextLine();
+			switch(command){
+			case "Buy": buyProperty(player, property); tempCommand = false; break;
+			case "Auction": auctionProperty(property); tempCommand = false; break;
+			default: System.out.println("Please enter a valid command"); 
+			}
+		}
+	}
+	//will need to integrate this code into property management (mortgage/unmortage) and barter
+	//This section checks for a color set after a property has been sold
+	//Then updates the propeties rent and playerSet fields when a color set has been confirmed
+	if(property.type.equals("Brown")){
+		if(allProperties[0].owner == allProperties[1].owner){
+			allProperties[0].playerSet = true;
+			allProperties[0].rent *= 2;
+			allProperties[1].playerSet = true;
+			allProperties[1].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Light Blue")){
+		if(allProperties[3].owner == allProperties[4].owner && allProperties[4].owner == allProperties[5].owner){
+			allProperties[3].playerSet = true;
+			allProperties[3].rent *= 2;
+			allProperties[4].playerSet = true;
+			allProperties[4].rent *= 2;
+			allProperties[5].playerSet = true;
+			allProperties[5].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Pink")){
+		if(allProperties[6].owner == allProperties[8].owner && allProperties[8].owner == allProperties[9].owner){
+			allProperties[6].playerSet = true;
+			allProperties[6].rent *= 2;
+			allProperties[8].playerSet = true;
+			allProperties[8].rent *= 2;
+			allProperties[9].playerSet = true;
+			allProperties[9].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Orange")){
+		if(allProperties[11].owner == allProperties[12].owner && allProperties[12].owner == allProperties[13].owner){
+			allProperties[11].playerSet = true;
+			allProperties[11].rent *= 2;
+			allProperties[12].playerSet = true;
+			allProperties[12].rent *= 2;
+			allProperties[13].playerSet = true;
+			allProperties[13].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Red")){
+		if(allProperties[14].owner == allProperties[15].owner && allProperties[15].owner == allProperties[16].owner){
+			allProperties[14].playerSet = true;
+			allProperties[14].rent *= 2;
+			allProperties[15].playerSet = true;
+			allProperties[15].rent *= 2;
+			allProperties[16].playerSet = true;
+			allProperties[16].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Yellow")){
+		if(allProperties[18].owner == allProperties[19].owner && allProperties[19].owner == allProperties[21].owner){
+			allProperties[18].playerSet = true;
+			allProperties[18].rent *= 2;
+			allProperties[19].playerSet = true;
+			allProperties[19].rent *= 2;
+			allProperties[21].playerSet = true;
+			allProperties[21].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Green")){
+		if(allProperties[22].owner == allProperties[23].owner && allProperties[23].owner == allProperties[24].owner){
+			allProperties[22].playerSet = true;
+			allProperties[22].rent *= 2;
+			allProperties[23].playerSet = true;
+			allProperties[23].rent *= 2;
+			allProperties[24].playerSet = true;
+			allProperties[24].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Blue")){
+		if(allProperties[26].owner == allProperties[27].owner){
+			allProperties[26].playerSet = true;
+			allProperties[26].rent *= 2;
+			allProperties[27].playerSet = true;
+			allProperties[27].rent *= 2;
+		}
+	}
+	else if(property.type.equals("Railroad")){
+		//there is a bug here that makes the railroad rent price 100 of allProperties[10] $100, not sure of source, double check conditionals
+		//seperate ownership for all
+		if(allProperties[2].owner != allProperties[10].owner && allProperties[2].owner != allProperties[17].owner && allProperties[2].owner != allProperties[25].owner && allProperties[10].owner != allProperties[17].owner && allProperties[10].owner != allProperties[25].owner && allProperties[17].owner != allProperties[25].owner){
+			allProperties[2].rent = 25;
+			allProperties[10].rent = 25;
+			allProperties[17].rent = 25;
+			allProperties[25].rent = 25;
+		}
+		//own two
+		else if(allProperties[2].owner == allProperties[10].owner && allProperties[10].owner != allProperties[17].owner && allProperties[10].owner != allProperties[25].owner){
+			allProperties[2].rent = 50;
+			allProperties[10].rent = 50;
+		}
+		else if(allProperties[10].owner == allProperties[17].owner && allProperties[10].owner != allProperties[2].owner && allProperties[10].owner != allProperties[25].owner){
+			allProperties[10].rent = 50;
+			allProperties[17].rent = 50;
+		}
+		else if(allProperties[17].owner == allProperties[25].owner && allProperties[17].owner != allProperties[2].owner && allProperties[17].owner != allProperties[10].owner){
+			allProperties[17].rent = 50;
+			allProperties[25].rent = 50;
+		}
+		//own three
+		else if(allProperties[2].owner == allProperties[10].owner && allProperties[2].owner == allProperties[17].owner && allProperties[2].owner != allProperties[25].owner){
+			allProperties[2].rent = 100;
+			allProperties[10].rent = 100;
+			allProperties[17].rent = 100;
+		}
+		else if(allProperties[10].owner == allProperties[17].owner && allProperties[10].owner == allProperties[25].owner && allProperties[10].owner != allProperties[2].owner){
+			allProperties[10].rent = 100;
+			allProperties[17].rent = 100;
+			allProperties[25].rent = 100;
+		}
+		else if(allProperties[17].owner == allProperties[25].owner && allProperties[17].owner == allProperties[2].owner && allProperties[17].owner != allProperties[10].owner){
+			allProperties[2].rent = 100;
+			allProperties[17].rent = 100;
+			allProperties[25].rent = 100;
+		}
+		else if(allProperties[2].owner == allProperties[10].owner && allProperties[2].owner == allProperties[25].owner && allProperties[2].owner != allProperties[17].owner){
+			allProperties[2].rent = 100;
+			allProperties[10].rent = 100;
+			allProperties[25].rent = 100;
+		}
+		//own all four
+		else if(allProperties[2].owner == allProperties[10].owner && allProperties[10].owner == allProperties[17].owner && allProperties[17].owner == allProperties[25].owner){
+			allProperties[2].rent = 200;
+			allProperties[10].rent = 200;
+			allProperties[17].rent = 200;
+			allProperties[25].rent = 200;
+		}
+	}
+	else if(property.type.equals("Utility")){
+		if(allProperties[7].owner == allProperties[20].owner){
+			allProperties[7].playerSet = true;
+			allProperties[7].rent = 10 * allProperties[7].rent / 4;
+			allProperties[20].playerSet = true;
+			allProperties[20].rent = 10 * allProperties[20].rent / 4;
+			
 		}
 	}
 }
@@ -431,7 +834,7 @@ static void buyProperty(player player, property property){
 	property.owner = player; //property is transfered to player
 	player.moneyBalance -= property.buyPrice; //player pays required funds
 	//prints out the property bought and now account balance
-	System.out.println(player.playerName + " has bought " + property.propertyName + " for $" + property.buyPrice + " and now has an account balance of " + player.moneyBalance);
+	System.out.println(player.playerName + " has bought " + property.propertyName + " for $" + property.buyPrice + " and now has an account balance of $" + player.moneyBalance);
 	//add the property to player's owned property's array
 	if(player.ownedProperties.length == 0 || player.ownedProperties == null){
 		property [] temp = new property[1]; //new owned properties list is created if this is the player's first property
@@ -481,10 +884,13 @@ static void auctionProperty(property property){ //players bid for property
 			case "Yes": 
 				System.out.println("What would you like your bid to be?");
 				int bidamount = sc.nextInt(); 
-				if(bidamount > tempprice){
+				if(bidamount > tempprice && bidamount <= playerList[i].moneyBalance){
 					templeader = playerList[i];
 					tempprice = bidamount; 
 					counter = 1;
+				}
+				else if(playerList[i].moneyBalance < bidamount){
+					System.out.println("Insufficient funds to make a bid!");
 				}
 				else{
 					System.out.println("Your bid was not high enough to out bid the leader!");
@@ -523,14 +929,94 @@ static void auctionProperty(property property){ //players bid for property
 		}
 	}
 }
-static void payRent(player payer, player reciever, int amount) {
+static void payRent(player payer, player reciever, property property) {
 	if(payer == reciever){
 		//player does not pay their own rent
 	}
 	else{
-		payer.moneyBalance -= amount; 
-		reciever.moneyBalance += amount;
-		System.out.println(payer.playerName + " has payed $" + amount + " to " + reciever.playerName + " in rent!");
+		if(property.mortgaged == false){
+			boolean tempBool = true;
+			while(tempBool){
+				if(payer.moneyBalance < property.rent){
+					int currentAssets = payer.moneyBalance;
+					for(int d = 0; d < payer.ownedProperties.length; d++){
+						if(payer.ownedProperties[d].mortgaged == false){
+							currentAssets += (payer.ownedProperties[d].buyPrice/2);
+						}
+					}
+					if(currentAssets < property.rent){
+						System.out.println(payer.playerName + " does not have enough funds to pay " + reciever.playerName + "! All their assets will be transfered to " + reciever.playerName + "!");
+						for(int i = 0; i < payer.ownedProperties.length; i++){
+							payer.ownedProperties[i].owner = reciever; 
+							property [] temp = new property[reciever.ownedProperties.length + 1];
+							for (int k = 0; k < reciever.ownedProperties.length; k++){
+								temp[k] = reciever.ownedProperties[k];
+							}
+							temp[reciever.ownedProperties.length] = payer.ownedProperties[i];
+							System.out.println(reciever.playerName + " now owns " + payer.ownedProperties[i].propertyName);
+							reciever.ownedProperties = temp;
+						}
+						System.out.println(reciever.playerName + " will recieve " + payer.moneyBalance + " in cash from " + payer.playerName + "!");
+						reciever.moneyBalance += payer.moneyBalance;
+						payer.moneyBalance = -1;
+						tempBool=false;
+					}
+					else if(currentAssets >= property.rent && payer.moneyBalance <= property.rent){
+						System.out.println("You still have property's that can be used to collect the neccesary cash! Please mortgage them so the game can continue");
+						propertyManagement(payer); continue; 
+					}
+				}
+				else{
+					payer.moneyBalance -= property.rent; 
+					reciever.moneyBalance += property.rent;
+					System.out.println(payer.playerName + " has payed $" + property.rent + " to " + reciever.playerName + " in rent!");
+					tempBool=false;
+				}
+			}
+		}
+	}
+}
+static void payRentChance(player payer, player reciever, property property) {
+	if(payer == reciever){
+		//player does not pay their own rent
+	}
+	else{
+		if(property.mortgaged == false){
+			boolean tempBool = true;
+			while(tempBool){
+				if(payer.moneyBalance < (property.rent*4)){
+					int currentAssets = payer.moneyBalance;
+					for(int d = 0; d < payer.ownedProperties.length; d++){
+						if(payer.ownedProperties[d].mortgaged == false){
+							currentAssets += (payer.ownedProperties[d].buyPrice);
+						}
+					}
+					if(currentAssets <= 0){
+						for(int i = 0; i < payer.ownedProperties.length; i++){
+							payer.ownedProperties[i].owner = reciever; 
+							property [] temp = new property[reciever.ownedProperties.length + 1];
+							for (int k = 0; k < reciever.ownedProperties.length; k++){
+								temp[k] = reciever.ownedProperties[k];
+							}
+							temp[reciever.ownedProperties.length] = payer.ownedProperties[i];
+							reciever.ownedProperties = temp;
+						}
+						reciever.moneyBalance += payer.moneyBalance;
+						payer.moneyBalance -= payer.moneyBalance;
+						tempBool=false;
+					}
+					else{
+						propertyManagement(payer); continue; 
+					}
+				}
+				else{
+					payer.moneyBalance -= (property.rent*4); 
+					reciever.moneyBalance += (property.rent*4);
+					System.out.println(payer.playerName + " has payed $" + property.rent + " to " + reciever.playerName + " in rent!");
+					tempBool=false;
+				}
+			}
+		}
 	}
 }
 static void rollDice() { //method is not used 
@@ -580,14 +1066,30 @@ static void drawCommunityChest (player player) { //corresponding card data can b
 	case 12: System.out.println(communityChestDescriptions[12]); player.moneyBalance -= 50; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
 	case 13: System.out.println(communityChestDescriptions[13]); player.moneyBalance += 100; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
 	case 14: System.out.println(communityChestDescriptions[14]); 
+	int paymentTracker = 0;
 	for(int i = 0; i < player.ownedProperties.length; i++){
-		//this is a for loop to scan through owned properties. We may have to change the design of owned properties 
-		//to accomodate for this card method
-		//Tried using instance of and had some troubles, may have to make a method
-		//Note that not all properties have the property int houses or boolean hotels
-		//this will be finished along with property management section
+		if(player.ownedProperties[i] instanceof street){
+			street temp = (street) player.ownedProperties[i];
+			//if your property has hotels, pay 115
+			if(temp.hotel == true){
+				player.moneyBalance -= 115;
+				paymentTracker += 115;
+			}
+			//otherwise count the number of houses
+			else{
+				int houseTrack = temp.numHouses;
+				player.moneyBalance -= houseTrack * 40;
+				paymentTracker += houseTrack * 40;
+			}
+		}
 	}
-	System.out.println("This method is still being built, will not change player's money balance yet!"); break; //have to access properties for this method using loop
+	if(paymentTracker == 0){
+		System.out.println("Luckily you didn't own any houses or hotels and didn't pay any fine!");
+	}
+	else{
+		System.out.println("You paid " + paymentTracker + " in fines!!");
+	}
+	break; 
 	case 15: System.out.println(communityChestDescriptions[15]); player.moneyBalance += 200; System.out.println(player.playerName + " has a new account balance of " + player.moneyBalance); break;
 	}
 }
@@ -603,7 +1105,7 @@ static void drawChance (player player) {
 	case 0: System.out.println(chanceDescriptions[0]); if(player.boardPosition >= 12 && player.boardPosition < 28){
 		player.boardPosition = 28;
 		if(allProperties[20].owned==true){
-			payRent(player, allProperties[20].owner, allProperties[20].rent*4); //pay more rent if property is owned
+			payRentChance(player, allProperties[20].owner, allProperties[20]); //pay more rent if property is owned
 		}
 		else{
 			manageUnownedProperty(player, allProperties[20]); //just in case property is unowned
@@ -614,7 +1116,7 @@ static void drawChance (player player) {
 		}
 		player.boardPosition = 12; 
 		if(allProperties[7].owned==true){
-			payRent(player, allProperties[7].owner, allProperties[7].rent*4);
+			payRentChance(player, allProperties[7].owner, allProperties[7]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[7]);
@@ -626,7 +1128,7 @@ static void drawChance (player player) {
 		}
 		player.boardPosition = 5;
 		if(allProperties[2].owned==true){
-			payRent(player, allProperties[2].owner, allProperties[2].rent*4);
+			payRentChance(player, allProperties[2].owner, allProperties[2]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[2]);
@@ -635,7 +1137,7 @@ static void drawChance (player player) {
 	else if(player.boardPosition >= 5 && player.boardPosition < 15){
 		player.boardPosition = 15;
 		if(allProperties[10].owned==true){
-			payRent(player, allProperties[10].owner, allProperties[10].rent*4);
+			payRentChance(player, allProperties[10].owner, allProperties[10]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[10]);
@@ -643,7 +1145,7 @@ static void drawChance (player player) {
 	} else if(player.boardPosition >= 15 && player.boardPosition < 25){
 		player.boardPosition = 25;
 		if(allProperties[17].owned==true){
-			payRent(player, allProperties[17].owner, allProperties[17].rent*4);
+			payRentChance(player, allProperties[17].owner, allProperties[17]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[17]);
@@ -651,7 +1153,7 @@ static void drawChance (player player) {
 	} else {
 		player.boardPosition = 35;
 		if(allProperties[25].owned==true){
-			payRent(player, allProperties[25].owner, allProperties[25].rent*4);
+			payRentChance(player, allProperties[25].owner, allProperties[25]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[25]);
@@ -679,7 +1181,7 @@ static void drawChance (player player) {
 		}
 		player.boardPosition = 5;
 		if(allProperties[2].owned==true){
-			payRent(player, allProperties[2].owner, allProperties[2].rent*4);
+			payRentChance(player, allProperties[2].owner, allProperties[2]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[2]);
@@ -688,7 +1190,7 @@ static void drawChance (player player) {
 	else if(player.boardPosition >= 5 && player.boardPosition < 15){
 		player.boardPosition = 15;
 		if(allProperties[10].owned==true){
-			payRent(player, allProperties[10].owner, allProperties[10].rent*4);
+			payRentChance(player, allProperties[10].owner, allProperties[10]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[10]);
@@ -696,7 +1198,7 @@ static void drawChance (player player) {
 	} else if(player.boardPosition >= 15 && player.boardPosition < 25){
 		player.boardPosition = 25;
 		if(allProperties[17].owned==true){
-			payRent(player, allProperties[17].owner, allProperties[17].rent*4);
+			payRentChance(player, allProperties[17].owner, allProperties[17]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[17]);
@@ -704,7 +1206,7 @@ static void drawChance (player player) {
 	} else {
 		player.boardPosition = 35;
 		if(allProperties[25].owned==true){
-			payRent(player, allProperties[25].owner, allProperties[25].rent*4);
+			payRentChance(player, allProperties[25].owner, allProperties[25]);
 		}
 		else{
 			manageUnownedProperty(player, allProperties[25]);
@@ -723,7 +1225,7 @@ static void drawChance (player player) {
 			manageUnownedProperty(player, allProperties[13]);
 		}
 		else{
-			 payRent(player, allProperties[13].owner, allProperties[13].rent); 
+			 payRent(player, allProperties[13].owner, allProperties[13]); 
 		}
 	}
 	else{
@@ -741,7 +1243,7 @@ static void drawChance (player player) {
 		manageUnownedProperty(player, allProperties[16]);
 	}
 	else{
-		 payRent(player, allProperties[16].owner, allProperties[16].rent); 
+		 payRent(player, allProperties[16].owner, allProperties[16]); 
 	} break; 
 	case 10: System.out.println(chanceDescriptions[10]); if(player.boardPosition > 11){
 		player.moneyBalance += 200;
@@ -755,7 +1257,7 @@ static void drawChance (player player) {
 		manageUnownedProperty(player, allProperties[6]);
 	}
 	else{
-		 payRent(player, allProperties[6].owner, allProperties[6].rent); 
+		 payRent(player, allProperties[6].owner, allProperties[6]); 
 	} break; 
 	case 11: System.out.println(chanceDescriptions[11]); player.moneyBalance -= 15; break; 
 	case 12: System.out.println(chanceDescriptions[12]); player.boardPosition = 39; break;
@@ -772,9 +1274,33 @@ static void drawChance (player player) {
 		manageUnownedProperty(player, allProperties[2]);
 	}
 	else{
-		 payRent(player, allProperties[2].owner, allProperties[2].rent); 
+		 payRent(player, allProperties[2].owner, allProperties[2]); 
 	} break; 
-	case 15: System.out.println(chanceDescriptions[15]); break; //again have to integrate houses, probably using loops
+	case 15: System.out.println(chanceDescriptions[15]); 
+	int paymentTracker = 0;
+	for(int i = 0; i < player.ownedProperties.length; i++){
+		if(player.ownedProperties[i] instanceof street){
+			street temp = (street) player.ownedProperties[i];
+			//if your property has hotels, pay 115
+			if(temp.hotel == true){
+				player.moneyBalance -= 100;
+				paymentTracker += 100;
+			}
+			//otherwise count the number of houses
+			else{
+				int houseTrack = temp.numHouses;
+				player.moneyBalance -= houseTrack * 50;
+				paymentTracker += houseTrack * 50;
+			}
+		}
+	}
+	if(paymentTracker == 0){
+		System.out.println("Luckily you didn't own any houses or hotels and didn't pay any fine!");
+	}
+	else{
+		System.out.println("You paid " + paymentTracker + " in fines!!");
+	}
+	break; //again have to integrate houses, probably using loops
 	}
 }
 
@@ -796,10 +1322,10 @@ static void drawChance (player player) {
 		int boardPosition;
 		boolean owned = false;
 		int buyPrice;
-		int mortgagePrice = buyPrice / 2;
 		int rent;
 		String type;
 		boolean mortgaged = false;
+		boolean playerSet = false;
 		player owner;
 		
 		
@@ -815,7 +1341,7 @@ static void drawChance (player player) {
 	public static class street extends property {
 		int numHouses = 0;
 		boolean hotel = false;
-		int housePrice;
+		int housePrice; 
 		
 		//Creating a constructor for subclass
 		street(String name, int position, int bPrice, int rent, String type, int hPrice) {
@@ -929,7 +1455,7 @@ static void drawChance (player player) {
 		communityChestDescriptions[12] = "Your fuzzy friends at the animal shelter will be thankful for your donation.\nPAY $50.";
 		communityChestDescriptions[13] = "You help build a new school playground, then you get to test the slide!\nCOLLECT $100.";
 		communityChestDescriptions[14] = "You should have volunteered for that home improvement project, you would have learned valuable skills!\nFOR EACH HOUSE YOU OWN, PAY $40.\nFOR EACH HOTEL YOU OWN, PAY $115";
-		communityChestDescriptions[15] = "You help yuor neighbors clean up their yards after a big storm.\nCOLLECT $200.";
+		communityChestDescriptions[15] = "You help your neighbors clean up their yards after a big storm.\nCOLLECT $200.";
 		
 		//creation of chance cards descriptions
 		chanceDescriptions[0] = "ADVANCE TO THE NEAREST UTILITY.\nIf UNOWNED, you may buy it from the Bank.\nIf OWNED, roll the dice, and pay the owner 10 times your roll.\nIF YOU PASS GO, COLLECT $200.";
@@ -958,7 +1484,7 @@ static void drawChance (player player) {
 		monopolyPieces[5] = "dog";
 		monopolyPieces[6] = "cat";
 		monopolyPieces[7] = "dinosaur";
-	
+		
 		//start of the program
 		player firstPlayer = startGame(); //get first player
 		gameon = true;
@@ -972,13 +1498,56 @@ static void drawChance (player player) {
 					a +=1;
 				}
 			}
-			for(int i = a; i < playerList.length; i++){ //start first round from the index of firdt player
+			for(int i = a; i < playerList.length; i++){ //start first round from the index of first player
 				game(playerList[i]);
 			}
 			boolean wholegame = true;
-			while(wholegame){ //after the end of player list has been reached from the index of the first player, game can advamce normally
-				for(int i = 0; i < playerList.length; i++){
+			while(wholegame){ //after the end of player list has been reached from the index of the first player, game can advance normally
+				for(int i = 0; i < playerList.length;){
 					game(playerList[i]);
+					int currentAssets = playerList[i].moneyBalance;
+					for(int d = 0; d < playerList[i].ownedProperties.length; d++){
+						if(playerList[i].ownedProperties[d].mortgaged == false){
+							currentAssets += (playerList[i].ownedProperties[d].buyPrice);
+						}
+					}
+					if(currentAssets < 0){
+						if(playerList.length == 2){
+							//this should end the game
+							if(i == 0){
+								System.out.println("Congrats " + playerList[1].playerName + "! You have won the game!"); 
+								gameon = false;
+								wholegame = false;
+								break;
+							}
+							else{
+								System.out.println("Congrats " + playerList[0].playerName + "! You have won the game!"); 
+								gameon = false;
+								wholegame = false;
+								break;
+							}
+						}
+						else{
+						player[] temp = new player[playerList.length-1];
+						for(int y = 0; y < i; y++){
+							temp[y] = playerList[y];
+						}
+						for(int z = playerList.length-1; z > i; z--){
+							temp[z-1] = playerList[z];
+						}
+						playerList = temp;
+						if(i == playerList.length){
+							i = 0;
+							continue;
+						}
+						else{
+							continue;
+						}
+					}
+					}
+					else{
+						i++;
+					}
 				}
 			}
 		}
