@@ -467,18 +467,19 @@ static void barter(player player) {
 					} else {
 						System.out.println(otherPlayer.playerName + " does not have that much money or input is less than zero");
 					}
+					sc.nextLine();
 					break;
 				case "Property":
 					int otherPropertyCount = 0;
 					System.out.println(otherPlayer.playerName + " has the following properties:");
-					for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner.equals(otherPlayer)) {
+					for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner == otherPlayer) {
 						System.out.println(allProperties[i].propertyName);
 						otherPropertyCount++;
 					}
 					
 					property[] otherTotalProperties = new property[otherPropertyCount];
 					int indexCounter = 0;
-					for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner.equals(otherPlayer)) {
+					for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner == otherPlayer) {
 						otherTotalProperties[indexCounter] = allProperties[i];
 						indexCounter++;
 					}
@@ -487,6 +488,7 @@ static void barter(player player) {
 					if (numOtherProperties > otherPropertyCount || numOtherProperties <= 0) {
 						System.out.println("You have entered more properties than the other player has or less than 1!");
 					} else {
+						sc.nextLine();
 						otherPlayerProperties = new property[numOtherProperties];
 						String[] otherPropertyNames = new String[numOtherProperties];
 						for (int i = 0; i < numOtherProperties; i++) {
@@ -503,7 +505,7 @@ static void barter(player player) {
 							}
 						}
 						
-					}
+					} break;
 				case "Cards": 
 					if (otherPlayer.JailFreeCards < 1) {
 						System.out.println(otherPlayer.playerName + " does not have any get out of jail free cards");
@@ -514,15 +516,16 @@ static void barter(player player) {
 							otherPlayerCards = cardInput;
 						} else System.out.println("You have entered more cards than " + otherPlayer.playerName + " has!");
 					}
+					sc.nextLine();
 					break;
 				case "Proceed": menu1 = false; break;
 				default: System.out.println("invalid command");
 				}
-				
+			}
 				boolean menu2 = true;
 				while(menu2) {
 					System.out.print(player.playerName + ", what would you like to give in return to " + otherPlayer.playerName + "? (Money, Property, Cards, Proceed): ");
-
+					String command = sc.next();
 					switch (command) {
 					case "Money": 
 						System.out.print(player.playerName + " currently has $" + player.moneyBalance + ". How much would you like to give? ");
@@ -532,18 +535,19 @@ static void barter(player player) {
 						} else {
 							System.out.println(player.playerName + " does not have that much money or input is less than zero");
 						}
+						sc.nextLine();
 						break;
 					case "Property":
 						int currentPropertyCount = 0;
 						System.out.println(player.playerName + " has the following properties:");
-						for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner.equals(player)) {
+						for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner == player) {
 							System.out.println(allProperties[i].propertyName);
 							currentPropertyCount++;
 						}
 						
 						property[] currentTotalProperties = new property[currentPropertyCount];
 						int indexCounter = 0;
-						for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner.equals(player)) {
+						for (int i = 0; i < allProperties.length; i++) if (allProperties[i].owner == player) {
 							currentTotalProperties[indexCounter] = allProperties[i];
 							indexCounter++;
 						}
@@ -552,6 +556,7 @@ static void barter(player player) {
 						if (numCurrentProperties > currentPropertyCount || numCurrentProperties <= 0) {
 							System.out.println("You have entered more properties than you have or less than 1!");
 						} else {
+							sc.nextLine();
 							currentPlayerProperties = new property[numCurrentProperties];
 							String[] currentPropertyNames = new String[numCurrentProperties];
 							for (int i = 0; i < numCurrentProperties; i++) {
@@ -569,6 +574,7 @@ static void barter(player player) {
 							}
 							
 						}
+						break;
 					case "Cards": 
 						if (player.JailFreeCards < 1) {
 							System.out.println(player.playerName + " does not have any get out of jail free cards");
@@ -579,6 +585,7 @@ static void barter(player player) {
 								currentPlayerCards = cardInput;
 							} else System.out.println("You have entered more cards than " + player.playerName + " has!");
 						}
+						sc.nextLine();
 						break;
 					case "Proceed": menu2 = false; break;
 					default: System.out.println("invalid command");
@@ -599,27 +606,34 @@ static void barter(player player) {
 					player.JailFreeCards -= currentPlayerCards;
 					playerList[otherPlayerIndex].JailFreeCards -= otherPlayerCards;
 					playerList[otherPlayerIndex].JailFreeCards += currentPlayerCards;
+					if(otherPlayerProperties != null) {
 					for(int i = 0; i < otherPlayerProperties.length; i++) {
 						for(int j = 0; j < allProperties.length; j++) {
-							if(otherPlayerProperties[i].equals(allProperties[j])) {
+							if(otherPlayerProperties[i] == allProperties[j]) {
 								allProperties[j].owner = player;
 							}
 						}
 					}
+					}
+					if (currentPlayerProperties != null) {
 					for(int i = 0; i < currentPlayerProperties.length; i++) {
 						for(int j = 0; j < allProperties.length; j++) {
-							if(currentPlayerProperties[i].equals(allProperties[j])) {
+							if(currentPlayerProperties[i] == allProperties[j]) {
 								allProperties[j].owner = playerList[otherPlayerIndex];
 							}
 						}
 					}
+					}
+					System.out.println("Player " + player.playerName + " has $" + player.moneyBalance);
+					System.out.println("Player " + playerList[otherPlayerIndex].playerName + " has $" + playerList[otherPlayerIndex].moneyBalance);
+					bartering = false;
 				} else if (accepted.equals("n")) {
 					System.out.println("No deal!");
 					bartering = false;
 				} else System.out.println("invalid response");
 		}
-		}	
 	}
+	audit();
 }
 //players can buy hotels/houses and/or mortgage properties
 static void propertyManagement(player player) {
@@ -829,6 +843,7 @@ static void propertyManagement(player player) {
 		default: System.out.println("Please enter valid command");
 		}
 	}
+	audit();
 }
 static void manageUnownedProperty(player player, property property){
 	if(player.moneyBalance < property.buyPrice){
@@ -852,6 +867,7 @@ static void manageUnownedProperty(player player, property property){
 		}
 	}
 	else {
+		//Comment
 		System.out.println(property.propertyName + " is unowned, would you like to buy it, or auction it?");
 		boolean tempCommand = true;
 		Scanner sc = new Scanner(System.in);
@@ -864,140 +880,7 @@ static void manageUnownedProperty(player player, property property){
 			}
 		}
 	}
-	//will need to integrate this code into property management (mortgage/unmortage) and barter
-	//This section checks for a color set after a property has been sold
-	//Then updates the propeties rent and playerSet fields when a color set has been confirmed
-	if(property.type.equals("Brown")){
-		if(allProperties[0].owner.equals(allProperties[1].owner)){
-			allProperties[0].playerSet = true;
-			allProperties[1].playerSet = true;
-		}
-	}
-	else if(property.type.equals("Light Blue")){
-		if(allProperties[3].owner == allProperties[4].owner && allProperties[4].owner == allProperties[5].owner){
-			allProperties[3].playerSet = true;
-			allProperties[4].playerSet = true;
-			allProperties[5].playerSet = true;
-		}
-	}
-	else if(property.type.equals("Pink")){
-		if(allProperties[6].owner == allProperties[8].owner && allProperties[8].owner == allProperties[9].owner){
-			allProperties[6].playerSet = true;
-			allProperties[6].rent *= 2;
-			allProperties[8].playerSet = true;
-			allProperties[8].rent *= 2;
-			allProperties[9].playerSet = true;
-			allProperties[9].rent *= 2;
-		}
-	}
-	else if(property.type.equals("Orange")){
-		if(allProperties[11].owner == allProperties[12].owner && allProperties[12].owner == allProperties[13].owner){
-			allProperties[11].playerSet = true;
-			allProperties[11].rent *= 2;
-			allProperties[12].playerSet = true;
-			allProperties[12].rent *= 2;
-			allProperties[13].playerSet = true;
-			allProperties[13].rent *= 2;
-		}
-	}
-	else if(property.type.equals("Red")){
-		if(allProperties[14].owner == allProperties[15].owner && allProperties[15].owner == allProperties[16].owner){
-			allProperties[14].playerSet = true;
-			allProperties[14].rent *= 2;
-			allProperties[15].playerSet = true;
-			allProperties[15].rent *= 2;
-			allProperties[16].playerSet = true;
-			allProperties[16].rent *= 2;
-		}
-	}
-	else if(property.type.equals("Yellow")){
-		if(allProperties[18].owner == allProperties[19].owner && allProperties[19].owner == allProperties[21].owner){
-			allProperties[18].playerSet = true;
-			allProperties[18].rent *= 2;
-			allProperties[19].playerSet = true;
-			allProperties[19].rent *= 2;
-			allProperties[21].playerSet = true;
-			allProperties[21].rent *= 2;
-		}
-	}
-	else if(property.type.equals("Green")){
-		if(allProperties[22].owner == allProperties[23].owner && allProperties[23].owner == allProperties[24].owner){
-			allProperties[22].playerSet = true;
-			allProperties[22].rent *= 2;
-			allProperties[23].playerSet = true;
-			allProperties[23].rent *= 2;
-			allProperties[24].playerSet = true;
-			allProperties[24].rent *= 2;
-		}
-	}
-	else if(property.type.equals("Blue")){
-		if(allProperties[26].owner == allProperties[27].owner){
-			allProperties[26].playerSet = true;
-			allProperties[26].rent *= 2;
-			allProperties[27].playerSet = true;
-			allProperties[27].rent *= 2;
-		}
-	}
-	else if(property.type.equals("Railroad")){
-		//there is a bug here that makes the railroad rent price 100 of allProperties[10] $100, not sure of source, double check conditionals
-		//seperate ownership for all
-		if(allProperties[2].owner != allProperties[10].owner && allProperties[2].owner != allProperties[17].owner && allProperties[2].owner != allProperties[25].owner && allProperties[10].owner != allProperties[17].owner && allProperties[10].owner != allProperties[25].owner && allProperties[17].owner != allProperties[25].owner){
-			allProperties[2].rent = 25;
-			allProperties[10].rent = 25;
-			allProperties[17].rent = 25;
-			allProperties[25].rent = 25;
-		}
-		//own two
-		else if(allProperties[2].owner == allProperties[10].owner && allProperties[10].owner != allProperties[17].owner && allProperties[10].owner != allProperties[25].owner){
-			allProperties[2].rent = 50;
-			allProperties[10].rent = 50;
-		}
-		else if(allProperties[10].owner == allProperties[17].owner && allProperties[10].owner != allProperties[2].owner && allProperties[10].owner != allProperties[25].owner){
-			allProperties[10].rent = 50;
-			allProperties[17].rent = 50;
-		}
-		else if(allProperties[17].owner == allProperties[25].owner && allProperties[17].owner != allProperties[2].owner && allProperties[17].owner != allProperties[10].owner){
-			allProperties[17].rent = 50;
-			allProperties[25].rent = 50;
-		}
-		//own three
-		else if(allProperties[2].owner == allProperties[10].owner && allProperties[2].owner == allProperties[17].owner && allProperties[2].owner != allProperties[25].owner){
-			allProperties[2].rent = 100;
-			allProperties[10].rent = 100;
-			allProperties[17].rent = 100;
-		}
-		else if(allProperties[10].owner == allProperties[17].owner && allProperties[10].owner == allProperties[25].owner && allProperties[10].owner != allProperties[2].owner){
-			allProperties[10].rent = 100;
-			allProperties[17].rent = 100;
-			allProperties[25].rent = 100;
-		}
-		else if(allProperties[17].owner == allProperties[25].owner && allProperties[17].owner == allProperties[2].owner && allProperties[17].owner != allProperties[10].owner){
-			allProperties[2].rent = 100;
-			allProperties[17].rent = 100;
-			allProperties[25].rent = 100;
-		}
-		else if(allProperties[2].owner == allProperties[10].owner && allProperties[2].owner == allProperties[25].owner && allProperties[2].owner != allProperties[17].owner){
-			allProperties[2].rent = 100;
-			allProperties[10].rent = 100;
-			allProperties[25].rent = 100;
-		}
-		//own all four
-		else if(allProperties[2].owner == allProperties[10].owner && allProperties[10].owner == allProperties[17].owner && allProperties[17].owner == allProperties[25].owner){
-			allProperties[2].rent = 200;
-			allProperties[10].rent = 200;
-			allProperties[17].rent = 200;
-			allProperties[25].rent = 200;
-		}
-	}
-	else if(property.type.equals("Utility")){
-		if(allProperties[7].owner == allProperties[20].owner){
-			allProperties[7].playerSet = true;
-			allProperties[7].rent = 10 * allProperties[7].rent / 4;
-			allProperties[20].playerSet = true;
-			allProperties[20].rent = 10 * allProperties[20].rent / 4;
-			
-		}
-	}
+	audit();
 }
 
 static void buyProperty(player player, property property){
@@ -1139,7 +1022,7 @@ static void payRent(player payer, player reciever, property property) {
 				else if(property.type.equals("Utility")) {
 					int countUtilOwned = -1;
 					for(int i = 0; i < allProperties.length; i++) {
-						if(allProperties[i].type.equals("Railroad") && allProperties[i].owner==property.owner) {
+						if(allProperties[i].type.equals("Utility") && allProperties[i].owner==property.owner) {
 							countUtilOwned +=1;
 						}
 					}
@@ -1150,22 +1033,18 @@ static void payRent(player payer, player reciever, property property) {
 			while(tempBool){
 				if(payer.moneyBalance < rentam){
 					int currentAssets = payer.moneyBalance;
-					for(int d = 0; d < payer.ownedProperties.length; d++){
-						if(payer.ownedProperties[d].mortgaged == false){
+					for(int d = 0; d < allProperties.length; d++){
+						if(allProperties[d].mortgaged == false && allProperties[d].owner == payer){
 							currentAssets += (payer.ownedProperties[d].buyPrice/2);
 						}
 					}
 					if(currentAssets < rentam){
 						System.out.println(payer.playerName + " does not have enough funds to pay " + reciever.playerName + "! All their assets will be transfered to " + reciever.playerName + "!");
-						for(int i = 0; i < payer.ownedProperties.length; i++){
-							payer.ownedProperties[i].owner = reciever; 
-							property [] temp = new property[reciever.ownedProperties.length + 1];
-							for (int k = 0; k < reciever.ownedProperties.length; k++){
-								temp[k] = reciever.ownedProperties[k];
+						for(int i = 0; i < allProperties.length; i++){
+							if(allProperties[i].owner == payer) {
+							allProperties[i].owner = reciever; 
+							System.out.println(reciever.playerName + " now owns " + allProperties[i].propertyName);
 							}
-							temp[reciever.ownedProperties.length] = payer.ownedProperties[i];
-							System.out.println(reciever.playerName + " now owns " + payer.ownedProperties[i].propertyName);
-							reciever.ownedProperties = temp;
 						}
 						System.out.println(reciever.playerName + " will recieve " + payer.moneyBalance + " in cash from " + payer.playerName + "!");
 						reciever.moneyBalance += payer.moneyBalance;
@@ -1188,42 +1067,82 @@ static void payRent(player payer, player reciever, property property) {
 	}
 }
 static void payRentChance(player payer, player reciever, property property) {
+	int rentam = 0;
 	if(payer == reciever){
 		//player does not pay their own rent
 	}
 	else{
 		if(property.mortgaged == false){
+			if(property instanceof street) {
+			street temp;
+			temp = (street)property;
+			if(property.playerSet == false) {
+				rentam=property.rentArray[0];
+			}
+			else if(property.playerSet == true && temp.numHouses ==0) {
+				rentam=property.rentArray[0]*2;
+			}
+			else if(temp.hotel == true){
+				rentam=property.rentArray[5];
+			}
+			else if(temp.numHouses > 0) {
+				rentam=property.rentArray[temp.numHouses];
+			}
+			}
+			else {
+				if(property.type.equals("Railroad")) {
+					//Because when you run the for loop
+					//the condition will be true at least once 
+					//i.e. at the position of that property in the array of allProperties
+					int countRailOwned = -1;
+					for(int i = 0; i < allProperties.length; i++) {
+						if(allProperties[i].type.equals("Railroad") && allProperties[i].owner==property.owner) {
+							countRailOwned +=1;
+						}
+					}
+					rentam = property.rentArray[countRailOwned];
+				}
+				else if(property.type.equals("Utility")) {
+					int countUtilOwned = -1;
+					for(int i = 0; i < allProperties.length; i++) {
+						if(allProperties[i].type.equals("Railroad") && allProperties[i].owner==property.owner) {
+							countUtilOwned +=1;
+						}
+					}
+					rentam = property.rentArray[countUtilOwned];
+				}
+			}
 			boolean tempBool = true;
 			while(tempBool){
-				if(payer.moneyBalance < (property.rent*4)){
+				if(payer.moneyBalance < rentam){
 					int currentAssets = payer.moneyBalance;
-					for(int d = 0; d < payer.ownedProperties.length; d++){
-						if(payer.ownedProperties[d].mortgaged == false){
-							currentAssets += (payer.ownedProperties[d].buyPrice);
+					for(int d = 0; d < allProperties.length; d++){
+						if(allProperties[d].mortgaged == false && allProperties[d].owner == payer){
+							currentAssets += (payer.ownedProperties[d].buyPrice/2);
 						}
 					}
-					if(currentAssets <= 0){
-						for(int i = 0; i < payer.ownedProperties.length; i++){
-							payer.ownedProperties[i].owner = reciever; 
-							property [] temp = new property[reciever.ownedProperties.length + 1];
-							for (int k = 0; k < reciever.ownedProperties.length; k++){
-								temp[k] = reciever.ownedProperties[k];
+					if(currentAssets < rentam){
+						System.out.println(payer.playerName + " does not have enough funds to pay " + reciever.playerName + "! All their assets will be transfered to " + reciever.playerName + "!");
+						for(int i = 0; i < allProperties.length; i++){
+							if(allProperties[i].owner == payer) {
+							allProperties[i].owner = reciever; 
+							System.out.println(reciever.playerName + " now owns " + allProperties[i].propertyName);
 							}
-							temp[reciever.ownedProperties.length] = payer.ownedProperties[i];
-							reciever.ownedProperties = temp;
 						}
+						System.out.println(reciever.playerName + " will recieve " + payer.moneyBalance + " in cash from " + payer.playerName + "!");
 						reciever.moneyBalance += payer.moneyBalance;
-						payer.moneyBalance -= payer.moneyBalance;
+						payer.moneyBalance = -1;
 						tempBool=false;
 					}
-					else{
+					else if(currentAssets >= rentam && payer.moneyBalance <= rentam){
+						System.out.println("You still have property's that can be used to collect the neccesary cash! Please mortgage them so the game can continue");
 						propertyManagement(payer); continue; 
 					}
 				}
 				else{
-					payer.moneyBalance -= (property.rent*4); 
-					reciever.moneyBalance += (property.rent*4);
-					System.out.println(payer.playerName + " has payed $" + property.rent + " to " + reciever.playerName + " in rent!");
+					payer.moneyBalance -= rentam; 
+					reciever.moneyBalance += rentam;
+					System.out.println(payer.playerName + " has payed $" + rentam + " to " + reciever.playerName + " in rent!");
 					tempBool=false;
 				}
 			}
@@ -1232,7 +1151,7 @@ static void payRentChance(player payer, player reciever, property property) {
 }
 static void audit() {
 	//check for brown monopoly
-	if (allProperties[0].owner.equals(allProperties[1].owner)) {
+	if (allProperties[0].owner == allProperties[1].owner) {
 		allProperties[0].playerSet = true;
 		allProperties[1].playerSet = true;
 	} else {
@@ -1240,7 +1159,7 @@ static void audit() {
 		allProperties[1].playerSet = false;
 	}
 	//light blue monopoly
-	if (allProperties[3].owner.equals(allProperties[4].owner) && allProperties[3].owner.equals(allProperties[5].owner)) {
+	if (allProperties[3].owner == allProperties[4].owner && allProperties[3].owner == allProperties[5].owner) {
 		allProperties[3].playerSet = true;
 		allProperties[4].playerSet = true;
 		allProperties[5].playerSet = true;
@@ -1250,7 +1169,7 @@ static void audit() {
 		allProperties[5].playerSet = false;
 	}
 	//pink monopoly
-	if (allProperties[6].owner.equals(allProperties[8].owner) && allProperties[6].owner.equals(allProperties[9].owner)) {
+	if (allProperties[6].owner == allProperties[8].owner && allProperties[6].owner == allProperties[9].owner) {
 		allProperties[6].playerSet = true;
 		allProperties[8].playerSet = true;
 		allProperties[9].playerSet = true;
@@ -1260,7 +1179,7 @@ static void audit() {
 		allProperties[9].playerSet = false;
 	}
 	//orange monopoly
-	if (allProperties[11].owner.equals(allProperties[12].owner) && allProperties[11].owner.equals(allProperties[13].owner)) {
+	if (allProperties[11].owner == allProperties[12].owner && allProperties[11].owner == allProperties[13].owner) {
 		allProperties[11].playerSet = true;
 		allProperties[12].playerSet = true;
 		allProperties[13].playerSet = true;
@@ -1270,7 +1189,7 @@ static void audit() {
 		allProperties[13].playerSet = false;
 	}
 	//red monopoly
-	if (allProperties[14].owner.equals(allProperties[15].owner) && allProperties[14].owner.equals(allProperties[16].owner)) {
+	if (allProperties[14].owner == allProperties[15].owner && allProperties[14].owner == allProperties[16].owner) {
 		allProperties[14].playerSet = true;
 		allProperties[15].playerSet = true;
 		allProperties[16].playerSet = true;
@@ -1280,7 +1199,7 @@ static void audit() {
 		allProperties[16].playerSet = false;
 	}
 	//yellow monopoly
-	if (allProperties[18].owner.equals(allProperties[19].owner) && allProperties[18].owner.equals(allProperties[21].owner)) {
+	if (allProperties[18].owner == allProperties[19].owner && allProperties[18].owner == allProperties[21].owner) {
 		allProperties[18].playerSet = true;
 		allProperties[19].playerSet = true;
 		allProperties[21].playerSet = true;
@@ -1290,7 +1209,7 @@ static void audit() {
 		allProperties[21].playerSet = false;
 	}
 	//green monopoly
-	if (allProperties[22].owner.equals(allProperties[23].owner) && allProperties[22].owner.equals(allProperties[24].owner)) {
+	if (allProperties[22].owner == allProperties[23].owner && allProperties[22].owner == allProperties[24].owner) {
 		allProperties[22].playerSet = true;
 		allProperties[23].playerSet = true;
 		allProperties[24].playerSet = true;
@@ -1300,7 +1219,7 @@ static void audit() {
 		allProperties[24].playerSet = false;
 	}
 	//check for dark blue monopoly
-	if (allProperties[26].owner.equals(allProperties[27].owner)) {
+	if (allProperties[26].owner == allProperties[27].owner) {
 		allProperties[26].playerSet = true;
 		allProperties[27].playerSet = true;
 	} else {
@@ -1308,7 +1227,7 @@ static void audit() {
 		allProperties[27].playerSet = false;
 	}
 	//utility set
-	if (allProperties[20].owner.equals(allProperties[7].owner)) {
+	if (allProperties[20].owner == allProperties[7].owner) {
 		allProperties[20].playerSet = true;
 		allProperties[7].playerSet = true;
 	} else {
