@@ -49,15 +49,15 @@ class TestWindow extends JFrame {
 		getContentPane().setBackground(new Color(192, 192, 192));
 		getContentPane().setLayout(null);
 		
-		btnBarter = new JButton("Barter" + "\n");
+		btnBarter = new JButton("Barter");
 		btnBarter.setBounds(1232, 500, 182, 48);
 		getContentPane().add(btnBarter);
 		
-		btnPropertyManagement = new JButton("Property Management" + "\n");
+		btnPropertyManagement = new JButton("Property Management" );
 		btnPropertyManagement.setBounds(1232, 558, 182, 48);
 		getContentPane().add(btnPropertyManagement);
 		
-		btnRoll = new JButton("Roll" + "\n");
+		btnRoll = new JButton("Roll");
 		btnRoll.setBounds(1232, 442, 182, 48);
 		getContentPane().add(btnRoll);
 		
@@ -78,15 +78,15 @@ class TestWindow extends JFrame {
 		getContentPane().add(playerData);
 		
 		JLabel board = new JLabel();
-		board.setIcon(new ImageIcon("C:\\Users\\barba\\workspace\\WIndowTest\\src\\Window\\Monopoly700.jpg" + "\n"));
+		board.setIcon(new ImageIcon("C:\\Users\\barba\\workspace\\WIndowTest\\src\\Window\\Monopoly700.jpg"));
 		board.setBounds(10, 10, 715, 715);
 		getContentPane().add(board);
 		
-		submit = new JButton("Submit" + "\n");
+		submit = new JButton("Submit");
 		submit.setBounds(1232, 674, 182, 52);
 		getContentPane().add(submit);
 		
-		endTurn = new JButton("End Turn" + "\n");
+		endTurn = new JButton("End Turn");
 		endTurn.setBounds(1232, 616, 182, 48);
 		getContentPane().add(endTurn);
 		
@@ -113,7 +113,7 @@ class TestWindow extends JFrame {
 				propertyManagement(cPlayer);
 			}
 			if(e.getSource()==endTurn) {
-				if(cPlayer.rollTurn==true) console.append("Please roll before ending your turn\n" + "\n");
+				if(cPlayer.rollTurn==true) console.append("Please roll before ending your turn\n");
 				else cPlayer.turn = false;
 			}
 			if(e.getSource()==btnRoll) {
@@ -142,12 +142,13 @@ class TestWindow extends JFrame {
 		static boolean input;
 		static player cPlayer;
 		static ActionListener1 monolistener;
-		private JButton btnNewButton;
+		
 
 		static String getInput() {
 			input = true;
 			while(input) {
-
+				int var = 1;
+				System.out.println(var);
 			}
 			return userInput.getText();
 		}
@@ -157,24 +158,24 @@ class TestWindow extends JFrame {
 			boolean validPlayerNum = false;
 			int numPlayers = 0;
 			while (!validPlayerNum){
-				console.append("Enter number of players (2-8): \n" + "\n");
+				console.append("Enter number of players (2-8): \n");
 				numPlayers = Integer.parseInt(getInput());
 				if (numPlayers >= 2 && numPlayers <= 8) {
 					validPlayerNum = true;
-				} else console.append("Please enter valid number of players.\n" + "\n");
+				} else console.append("Please enter valid number of players.\n");
 			} 
 			
 			
 			playerList = new player[numPlayers]; //create a list with the length of the number of players
 			//Monopoly m = new Monopoly();
 			for (int i = 0; i < playerList.length; i++) {
-				console.append("Enter player name: \n" + "\n");
+				console.append("Enter player name: \n");
 				playerList[i] = new player();
 				playerList[i].playerName = getInput(); //player enters their name 
 				boolean validPiece = false;
 				
 				while (!validPiece) { //player keeps choosing a piece until they select a valid piece that is not already taken
-					console.append(playerList[i].playerName + ", what piece would you like to be? (battleship, car, penguin, top hat, duck, dog, cat, dinosaur) \n" + "\n");
+					console.append(playerList[i].playerName + ", what piece would you like to be? (battleship, car, penguin, top hat, duck, dog, cat, dinosaur) \n");
 					String pieceChoice = getInput();
 					
 					for (int x = 0; x < monopolyPieces.length; x++) { //matches input against every element in piece array
@@ -186,7 +187,7 @@ class TestWindow extends JFrame {
 						}
 				
 					}
-					if (!validPiece) console.append("Piece is either chosen or does not exist.\n" + "\n");
+					if (!validPiece) console.append("Piece is either chosen or does not exist.\n");
 				}
 				
 			}
@@ -194,10 +195,10 @@ class TestWindow extends JFrame {
 			int[] playerRolls = new int[playerList.length];
 			
 			for (int i = 0; i < playerList.length; i++) { //all the players roll the dice
-				console.append(playerList[i].playerName + " is rolling\n" + "\n");
+				console.append(playerList[i].playerName + " is rolling\n");
 				rollDice();
 				playerRolls[i] = dice1 + dice2;
-				console.append(playerList[i].playerName + " rolled a " + playerRolls[i] + "\n" + "\n");
+				console.append(playerList[i].playerName + " rolled a " + playerRolls[i] + "\n");
 			}
 			
 			int maxRollerIndex = 0;
@@ -208,7 +209,7 @@ class TestWindow extends JFrame {
 					maxRollerIndex = i;
 				}
 			}
-			console.append(playerList[maxRollerIndex].playerName + " had the highest roll of " + maxRoll + ". They will be first.\n" + "\n");
+			console.append(playerList[maxRollerIndex].playerName + " had the highest roll of " + maxRoll + ". They will be first.\n");
 			return playerList[maxRollerIndex];
 		}
 
@@ -219,33 +220,33 @@ class TestWindow extends JFrame {
 		//property management (buying houses/hotels, mortgaging)
 		static void game(player currentPlayer) {
 			cPlayer = currentPlayer;
-			console.append(currentPlayer.playerName + " it is your turn!\n" + "\n");
+			console.append(currentPlayer.playerName + " it is your turn!\n" );
 			currentPlayer.rollTurn = true;
 			currentPlayer.turn=true;
 			if(cPlayer.JailFreeCards > 0 && currentPlayer.inJail){
-				console.append("Would you like to use a get out of jail free card? (Yes/No)\n" + "\n");
+				console.append("Would you like to use a get out of jail free card? (Yes/No)\n" );
 				String command = getInput();
 				switch(command){
 				case "Yes": currentPlayer.inJail=false; break;
-				default: console.append("You have forgone using your get out of jail free card!\n" + "\n");
+				default: console.append("You have forgone using your get out of jail free card!\n" );
 				}
 				}
 			if(cPlayer.inJail==true && currentPlayer.moneyBalance >= 50 && currentPlayer.jailCounter < 3){
-				console.append("You are in jail! Would you like to pay $50 to get out?\n" + "\n");
+				console.append("You are in jail! Would you like to pay $50 to get out?\n" );
 				String jailCommand = getInput();
 				switch(jailCommand){
-				case "Yes": currentPlayer.inJail = false; console.append("You paid $50 to get out of jail and now have a balance of " + currentPlayer.moneyBalance + "\n" + "\n"); break;
-				default: console.append("You opted not to pay $50 and will try to roll to get out of jail\n" + "\n");
+				case "Yes": currentPlayer.inJail = false; console.append("You paid $50 to get out of jail and now have a balance of " + currentPlayer.moneyBalance + "\n"); break;
+				default: console.append("You opted not to pay $50 and will try to roll to get out of jail\n" );
 				}
 			}
 			if(cPlayer.inJail==true && currentPlayer.moneyBalance >= 50 && currentPlayer.jailCounter == 3){
-				console.append("This is your third roll in jail, try and roll doubles to get out for free, otherwise pay $50\n" + "\n");
+				console.append("This is your third roll in jail, try and roll doubles to get out for free, otherwise pay $50\n");
 			}
 			if(cPlayer.inJail == true && currentPlayer.moneyBalance < 50){
 				//have to make this method implement currentAssets
-				console.append("You are in jail and do not have enough money to get out! You must try to roll doubles to get out of jail!\n" + "\n");
+				console.append("You are in jail and do not have enough money to get out! You must try to roll doubles to get out of jail!\n" );
 			}
-			console.append(currentPlayer.playerName +", what action would you like to take? (roll, barter, property management, end turn)\n" + "\n");
+			console.append(currentPlayer.playerName +", what action would you like to take? (roll, barter, property management, end turn)\n");
 			while(cPlayer.turn) {
 				
 			}
@@ -267,9 +268,9 @@ class TestWindow extends JFrame {
 			
 			while(player.rollTurn){
 			dice1 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1); //gets a random number 1 through six inclusive
-			console.append("Dice one is " + dice1 + "\n" + "\n");
+			console.append("Dice one is " + dice1 + "\n");
 			dice2 = (int) Math.floor(Math.random() *(6 - 1 + 1) + 1);
-			console.append("Dice two is " + dice2 + "\n" + "\n");
+			console.append("Dice two is " + dice2 + "\n");
 			int movement = dice1+dice2; //roll two dice per turn
 			
 			if(player.inJail == false){ //if you aren't in jail, you move on the board
@@ -280,7 +281,7 @@ class TestWindow extends JFrame {
 			if(dice1==dice2 && tempjailtrack==true){
 				doubletracker += 1;
 				if(doubletracker == 3){ //if your roll three doubles in a row, you go to jail!
-					console.append("You rolled three doubles in a row, go to Jail!\n" + "\n");
+					console.append("You rolled three doubles in a row, go to Jail!\n");
 					player.boardPosition = 10;
 					player.inJail = true; 
 					player.rollTurn = false;
@@ -312,100 +313,100 @@ class TestWindow extends JFrame {
 				}
 			}
 			switch(player.boardPosition){ //correspondng square data is in main method, built using constructor
-			case 0: console.append("You are at board position " + player.boardPosition + ", Pass Go, collect $200!\n" + "\n"); break;
-			case 1: console.append("You are at board position " + player.boardPosition + ", " + allProperties[0].propertyName+"\n" + "\n"); 
+			case 0: console.append("You are at board position " + player.boardPosition + ", Pass Go, collect $200!\n"); break;
+			case 1: console.append("You are at board position " + player.boardPosition + ", " + allProperties[0].propertyName+"\n"); 
 				if(allProperties[0].owned==false){
 					manageUnownedProperty(player, allProperties[0]); //this method is used to decide if a player buys or auctions property
 				}
 				else{
 					 payRent(player, allProperties[0].owner, allProperties[0]); 
 				} break;
-			case 2: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now.\n" + "\n"); 
+			case 2: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now.\n"); 
 			drawCommunityChest(player); break;
-			case 3: console.append("You are at board position " + player.boardPosition + ", " + allProperties[1].propertyName+"\n" + "\n"); 
+			case 3: console.append("You are at board position " + player.boardPosition + ", " + allProperties[1].propertyName+"\n"); 
 				if(allProperties[1].owned==false){
 					manageUnownedProperty(player, allProperties[1]);
 				}
 			else{
 				 payRent(player, allProperties[1].owner, allProperties[1]); 
 			} break;
-			case 4: console.append("You are at board position " + player.boardPosition + ", income tax, pay $200!\n" + "\n"); player.moneyBalance -= 200; break;
-			case 5: console.append("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName+"/n" + "\n"); 
+			case 4: console.append("You are at board position " + player.boardPosition + ", income tax, pay $200!\n"); player.moneyBalance -= 200; break;
+			case 5: console.append("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName + "\n"); 
 			if(allProperties[2].owned==false){
 				manageUnownedProperty(player, allProperties[2]);
 			}
 			else{
 				 payRent(player, allProperties[2].owner, allProperties[2]); 
 			} break;
-			case 6: console.append("You are at board position " + player.boardPosition + ", " + allProperties[3].propertyName + "/n" + "\n"); 
+			case 6: console.append("You are at board position " + player.boardPosition + ", " + allProperties[3].propertyName + "/n"); 
 			if(allProperties[3].owned==false){
 				manageUnownedProperty(player, allProperties[3]);
 			}
 			else{
 				 payRent(player, allProperties[3].owner, allProperties[3]); 
 			} break;
-			case 7: console.append("You are at board position " + player.boardPosition + ", chance, drawing a chance card now." + "\n" + "\n"); 
+			case 7: console.append("You are at board position " + player.boardPosition + ", chance, drawing a chance card now." + "\n"); 
 			drawChance(player); break;
-			case 8: console.append("You are at board position " + player.boardPosition + ", " + allProperties[4].propertyName+ "\n" + "\n"); 
+			case 8: console.append("You are at board position " + player.boardPosition + ", " + allProperties[4].propertyName+ "\n"); 
 			if(allProperties[4].owned==false){
 				manageUnownedProperty(player, allProperties[4]);
 			}
 			else{
 				 payRent(player, allProperties[4].owner, allProperties[4]); 
 			} break;
-			case 9: console.append("You are at board position " + player.boardPosition + ", " + allProperties[5].propertyName+ "\n" + "\n"); 
+			case 9: console.append("You are at board position " + player.boardPosition + ", " + allProperties[5].propertyName+ "\n"); 
 			if(allProperties[5].owned==false){
 				manageUnownedProperty(player, allProperties[5]);
 			}
 			else{
 				 payRent(player, allProperties[5].owner, allProperties[5]); 
 			} break;
-			case 10: if(player.inJail == false) console.append("You are just visiting jail"+ "\n" + "\n"); break;
-			case 11: console.append("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName + "\n" + "\n"); 
+			case 10: if(player.inJail == false) console.append("You are just visiting jail"+ "\n"); break;
+			case 11: console.append("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName + "\n"); 
 			if(allProperties[6].owned==false){
 				manageUnownedProperty(player, allProperties[6]);
 			}
 			else{
 				 payRent(player, allProperties[6].owner, allProperties[6]); 
 			} break;
-			case 12: console.append("You are at board position " + player.boardPosition + ", " + allProperties[7].propertyName +"\n" + "\n"); 
+			case 12: console.append("You are at board position " + player.boardPosition + ", " + allProperties[7].propertyName +"\n"); 
 			if(allProperties[7].owned==false){
 				manageUnownedProperty(player, allProperties[7]);
 			}
 			else{
 				 payRent(player, allProperties[7].owner, allProperties[7]); 
 			} break;
-			case 13: console.append("You are at board position " + player.boardPosition + ", " + allProperties[8].propertyName + "\n" + "\n"); 
+			case 13: console.append("You are at board position " + player.boardPosition + ", " + allProperties[8].propertyName + "\n"); 
 			if(allProperties[8].owned==false){
 				manageUnownedProperty(player, allProperties[8]);
 			}
 			else{
 				 payRent(player, allProperties[8].owner, allProperties[8]); 
 			} break;
-			case 14: console.append("You are at board position " + player.boardPosition + ", " + allProperties[9].propertyName + "\n" + "\n"); 
+			case 14: console.append("You are at board position " + player.boardPosition + ", " + allProperties[9].propertyName + "\n"); 
 			if(allProperties[9].owned==false){
 				manageUnownedProperty(player, allProperties[9]);
 			}
 			else{
 				 payRent(player, allProperties[0].owner, allProperties[9]); 
 			} break;
-			case 15: console.append("You are at board position " + player.boardPosition + ", " + allProperties[10].propertyName + "\n" + "\n"); 
+			case 15: console.append("You are at board position " + player.boardPosition + ", " + allProperties[10].propertyName + "\n"); 
 			if(allProperties[10].owned==false){
 				manageUnownedProperty(player, allProperties[10]);
 			}
 			else{
 				 payRent(player, allProperties[10].owner, allProperties[10]); 
 			} break;
-			case 16: console.append("You are at board position " + player.boardPosition + ", " + allProperties[11].propertyName + "\n" + "\n"); 
+			case 16: console.append("You are at board position " + player.boardPosition + ", " + allProperties[11].propertyName + "\n"); 
 			if(allProperties[11].owned==false){
 				manageUnownedProperty(player, allProperties[11]);
 			}
 			else{
 				 payRent(player, allProperties[11].owner, allProperties[11]); 
 			} break;
-			case 17: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now.\n" + "\n"); 
+			case 17: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now.\n"); 
 			drawCommunityChest(player); break;
-			case 18: console.append("You are at board position " + player.boardPosition + ", " + allProperties[12].propertyName + "\n" + "\n"); 
+			case 18: console.append("You are at board position " + player.boardPosition + ", " + allProperties[12].propertyName + "\n"); 
 			if(allProperties[12].owned==false){
 				manageUnownedProperty(player, allProperties[12]);
 			}
@@ -419,15 +420,15 @@ class TestWindow extends JFrame {
 			else{
 				 payRent(player, allProperties[13].owner, allProperties[13]); 
 			} break;
-			case 20: console.append("You are at board position " + player.boardPosition + ", free parking, enjoy your stay!" + "\n" + "\n"); break;
-			case 21: console.append("You are at board position " + player.boardPosition + ", " + allProperties[14].propertyName + "\n" + "\n"); 
+			case 20: console.append("You are at board position " + player.boardPosition + ", free parking, enjoy your stay!" + "\n"); break;
+			case 21: console.append("You are at board position " + player.boardPosition + ", " + allProperties[14].propertyName + "\n"); 
 			if(allProperties[14].owned==false){
 				manageUnownedProperty(player, allProperties[14]);
 			}
 			else{
 				 payRent(player, allProperties[14].owner, allProperties[14]); 
 			} break;
-			case 22: console.append("You are at board position " + player.boardPosition + ", chance, drawing a chance card now." + "\n" + "\n"); 
+			case 22: console.append("You are at board position " + player.boardPosition + ", chance, drawing a chance card now." + "\n"); 
 			drawChance(player); break;
 			case 23: console.append("You are at board position " + player.boardPosition + ", " + allProperties[15].propertyName); 
 			if(allProperties[15].owned==false){
@@ -478,7 +479,7 @@ class TestWindow extends JFrame {
 			else{
 				 payRent(player, allProperties[21].owner, allProperties[21]); 
 			} break;
-			case 30: player.inJail = true; console.append("You landed on go to jail, go to jail immediately!" + "\n" + "\n"); break;
+			case 30: player.inJail = true; console.append("You landed on go to jail, go to jail immediately!" + "\n"); break;
 			case 31: console.append("You are at board position " + player.boardPosition + " " + allProperties[22].propertyName); 
 			if(allProperties[22].owned==false){
 				manageUnownedProperty(player, allProperties[22]);
@@ -493,7 +494,7 @@ class TestWindow extends JFrame {
 			else{
 				 payRent(player, allProperties[23].owner, allProperties[23]); 
 			} break;
-			case 33: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now." + "\n" + "\n"); 
+			case 33: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now." + "\n"); 
 			drawCommunityChest(player); break;
 			case 34: console.append("You are at board position " + player.boardPosition + ", " + allProperties[24].propertyName); 
 			if(allProperties[24].owned==false){
@@ -555,9 +556,8 @@ class TestWindow extends JFrame {
 				console.append(player.playerName + ", these are the remaining players in the game:" + "\n");
 				for (int i = 0; i < playerList.length; i++) if(!playerList[i].equals(player)) console.append(playerList[i].playerName);
 				
-				System.out.print(player.playerName + ", enter the name of the player you would like to trade with: " + "\n");
-				Scanner sc = new Scanner(System.in);
-				String otherPlayerName = sc.nextLine();
+				console.append(player.playerName + ", enter the name of the player you would like to trade with: " + "\n");
+				String otherPlayerName = getInput();
 				int otherPlayerIndex = -1;
 				
 				player otherPlayer = null;
@@ -578,18 +578,18 @@ class TestWindow extends JFrame {
 					int currentPlayerCards = 0, otherPlayerCards = 0;
 					boolean menu1 = true;
 					while(menu1) {
-						System.out.print(player.playerName + ", edit what you would like from " + otherPlayer.playerName + " (Money, Property, Cards, Proceed): " + "\n");
-						String command = sc.nextLine();
+						console.append(player.playerName + ", edit what you would like from " + otherPlayer.playerName + " (Money, Property, Cards, Proceed): " + "\n");
+						String command = getInput();
 						switch (command) {
 						case "Money": 
-							System.out.print(otherPlayer.playerName + " currently has $" + otherPlayer.moneyBalance + ". How much would you like? " + "\n");
-							int moneyInput = sc.nextInt();
+							console.append(otherPlayer.playerName + " currently has $" + otherPlayer.moneyBalance + ". How much would you like? " + "\n");
+							int moneyInput = Integer.parseInt(getInput());
 							if (moneyInput <= otherPlayer.moneyBalance && moneyInput > 0) {
 								otherPlayerMoney = moneyInput;
 							} else {
 								console.append(otherPlayer.playerName + " does not have that much money or input is less than zero" + "\n");
 							}
-							sc.nextLine();
+							getInput();
 							break;
 						case "Property":
 							int otherPropertyCount = 0;
@@ -605,17 +605,17 @@ class TestWindow extends JFrame {
 								otherTotalProperties[indexCounter] = allProperties[i];
 								indexCounter++;
 							}
-							System.out.print("How many of these properties would you like to barter for? " + "\n");
-							int numOtherProperties = sc.nextInt();
+							console.append("How many of these properties would you like to barter for? " + "\n");
+							int numOtherProperties = Integer.parseInt(getInput());
 							if (numOtherProperties > otherPropertyCount || numOtherProperties <= 0) {
 								console.append("You have entered more properties than the other player has or less than 1!" + "\n");
 							} else {
-								sc.nextLine();
+								getInput();
 								otherPlayerProperties = new property[numOtherProperties];
 								String[] otherPropertyNames = new String[numOtherProperties];
 								for (int i = 0; i < numOtherProperties; i++) {
-									System.out.print("Enter the " + (i + 1) + " property you want: " + "\n");
-									otherPropertyNames[i] = sc.nextLine();
+									console.append("Enter the " + (i + 1) + " property you want: " + "\n");
+									otherPropertyNames[i] = getInput();
 								}
 								
 								for (int i = 0; i < otherPlayerProperties.length; i++) { //need to add error handling if names do not match properties in list
@@ -633,12 +633,12 @@ class TestWindow extends JFrame {
 								console.append(otherPlayer.playerName + " does not have any get out of jail free cards" + "\n");
 							} else {
 								console.append(player.playerName + ", how many get out of jail free cards from " + otherPlayer.playerName + " would you like?" + "\n");
-								int cardInput = sc.nextInt();
+								int cardInput = Integer.parseInt(getInput());
 								if (cardInput <= otherPlayer.JailFreeCards && cardInput > 0) {
 									otherPlayerCards = cardInput;
 								} else console.append("You have entered more cards than " + otherPlayer.playerName + " has!" + "\n");
 							}
-							sc.nextLine();
+							getInput();
 							break;
 						case "Proceed": menu1 = false; break;
 						default: console.append("invalid command" + "\n");
@@ -646,18 +646,18 @@ class TestWindow extends JFrame {
 					}
 						boolean menu2 = true;
 						while(menu2) {
-							System.out.print(player.playerName + ", what would you like to give in return to " + otherPlayer.playerName + "? (Money, Property, Cards, Proceed): " + "\n");
-							String command = sc.next();
+							console.append(player.playerName + ", what would you like to give in return to " + otherPlayer.playerName + "? (Money, Property, Cards, Proceed): " + "\n");
+							String command = getInput();
 							switch (command) {
 							case "Money": 
-								System.out.print(player.playerName + " currently has $" + player.moneyBalance + ". How much would you like to give? " + "\n");
-								int moneyInput = sc.nextInt();
+								console.append(player.playerName + " currently has $" + player.moneyBalance + ". How much would you like to give? " + "\n");
+								int moneyInput = Integer.parseInt(getInput());
 								if (moneyInput <= player.moneyBalance && moneyInput > 0) {
 									currentPlayerMoney = moneyInput;
 								} else {
 									console.append(player.playerName + " does not have that much money or input is less than zero" + "\n");
 								}
-								sc.nextLine();
+								getInput();
 								break;
 							case "Property":
 								int currentPropertyCount = 0;
@@ -673,17 +673,17 @@ class TestWindow extends JFrame {
 									currentTotalProperties[indexCounter] = allProperties[i];
 									indexCounter++;
 								}
-								System.out.print("How many of these properties would you like to give? " + "\n");
-								int numCurrentProperties = sc.nextInt();
+								console.append("How many of these properties would you like to give? " + "\n");
+								int numCurrentProperties = Integer.parseInt(getInput());
 								if (numCurrentProperties > currentPropertyCount || numCurrentProperties <= 0) {
 									console.append("You have entered more properties than you have or less than 1!" + "\n");
 								} else {
-									sc.nextLine();
+									getInput();
 									currentPlayerProperties = new property[numCurrentProperties];
 									String[] currentPropertyNames = new String[numCurrentProperties];
 									for (int i = 0; i < numCurrentProperties; i++) {
-										System.out.print("Enter the " + (i + 1) + " property you want to give: " + "\n");
-										currentPropertyNames[i] = sc.nextLine();
+										console.append("Enter the " + (i + 1) + " property you want to give: " + "\n");
+										currentPropertyNames[i] = getInput();
 									}
 									
 									for (int i = 0; i < currentPlayerProperties.length; i++) { //need to add error handling if names do not match properties in list
@@ -702,12 +702,12 @@ class TestWindow extends JFrame {
 									console.append(player.playerName + " does not have any get out of jail free cards" + "\n");
 								} else {
 									console.append(player.playerName + ", how many get out of jail free cards would you like to give?" + "\n");
-									int cardInput = sc.nextInt();
+									int cardInput = Integer.parseInt(getInput());
 									if (cardInput <= player.JailFreeCards && cardInput > 0) {
 										currentPlayerCards = cardInput;
 									} else console.append("You have entered more cards than " + player.playerName + " has!" + "\n");
 								}
-								sc.nextLine();
+								getInput();
 								break;
 							case "Proceed": menu2 = false; break;
 							default: console.append("invalid command" + "\n");
@@ -715,10 +715,10 @@ class TestWindow extends JFrame {
 						}
 					}
 						
-						System.out.print("Has the deal been accepted? (y/n) " + "\n");
-						String accepted = sc.next();
+						console.append("Has the deal been accepted? (y/n) " + "\n");
+						String accepted = getInput();
 						
-						if (accepted.equals("y" + "\n")) {
+						if (accepted.equals("y")) {
 							console.append("Deal accepted!" + "\n");
 							player.moneyBalance += otherPlayerMoney;
 							player.moneyBalance -= currentPlayerMoney;
@@ -749,7 +749,7 @@ class TestWindow extends JFrame {
 							console.append("Player " + player.playerName + " has $" + player.moneyBalance);
 							console.append("Player " + playerList[otherPlayerIndex].playerName + " has $" + playerList[otherPlayerIndex].moneyBalance);
 							bartering = false;
-						} else if (accepted.equals("n" + "\n")) {
+						} else if (accepted.equals("n")) {
 							console.append("No deal!" + "\n");
 							bartering = false;
 						} else console.append("invalid response" + "\n");
@@ -763,7 +763,7 @@ class TestWindow extends JFrame {
 			while(managing) {
 				Scanner sc = new Scanner(System.in);
 				console.append(player.playerName + ", what would you like to do? (Buy, Sell, Mortgage, Unmortgage, Exit)" + "\n");
-				String command = sc.nextLine();
+				String command = getInput();
 				
 				//these need to be defined here because they are used for several options in menu
 				String currentStreetName, currentPropertyName; //user enters input
@@ -780,7 +780,7 @@ class TestWindow extends JFrame {
 					}
 					
 					console.append("Enter the name of the street you would like to build on:" + "\n");
-					currentStreetName = sc.nextLine(); //user enters input
+					currentStreetName = getInput(); //user enters input
 					currentStreet = null; //used to store and manipulate current street object
 					ownsProperty = false; //used to determine if the user has entered a valid street
 					currentStreetIndex = 0; //index is needed later to save potential changes made to street
@@ -803,7 +803,7 @@ class TestWindow extends JFrame {
 						console.append("Each house costs $" + currentStreet.housePrice);
 						
 						console.append("How many houses would you like to purchase? " + "\n");
-						int desiredHouses = sc.nextInt(); //gather user input
+						int desiredHouses = Integer.parseInt(getInput()); //gather user input
 						//player has to afford the desired houses and not be building over the limit
 						if(desiredHouses * currentStreet.housePrice > player.moneyBalance || desiredHouses + currentStreet.numHouses > 5) {
 							console.append("You either have insufficient funds or are trying to build too many houses!" + "\n");
@@ -826,7 +826,7 @@ class TestWindow extends JFrame {
 					}
 					
 					console.append("Enter the name of the street you would like to sell improvements on: " + "\n");
-					currentStreetName = sc.nextLine(); //user enters input
+					currentStreetName = getInput(); //user enters input
 					currentStreet = null; //used to store and manipulate current street object
 					ownsProperty = false; //used to determine if the user has entered a valid street
 					currentStreetIndex = 0; //index is needed later to save potential changes made to street
@@ -849,8 +849,8 @@ class TestWindow extends JFrame {
 						
 						console.append("You may sell each house back to the bank for $" + (currentStreet.housePrice / 2));
 						
-						System.out.print("How many houses would you like to sell? " + "\n");
-						int desiredHouses = sc.nextInt(); //gather user input
+						console.append("How many houses would you like to sell? " + "\n");
+						int desiredHouses = Integer.parseInt(getInput()); //gather user input
 						//player has to afford the desired houses and not be building over the limit
 						if(desiredHouses > currentStreet.numHouses) {
 							console.append("You are tyring to sell more houses than you have!" + "\n");
@@ -872,7 +872,7 @@ class TestWindow extends JFrame {
 					
 					console.append("Which property would you like to mortgage? " + "\n");
 					//need to reset these variables because we could be dealing with a street or property class
-					currentPropertyName = sc.nextLine(); //user enters input
+					currentPropertyName = getInput(); //user enters input
 					currentProperty = null;
 					currentStreet = null;//used to store and manipulate current street object
 					ownsProperty = false; //used to determine if the user has entered a valid street
@@ -917,9 +917,9 @@ class TestWindow extends JFrame {
 						if (allProperties[i].mortgaged && allProperties[i].owner.equals(player)) console.append(allProperties[i].propertyName);
 					}
 					
-					System.out.print("Which property would you like to unmortgage? " + "\n");
+					console.append("Which property would you like to unmortgage? " + "\n");
 					//need to reset these variables because we could be dealing with a street or property class
-					currentPropertyName = sc.nextLine(); //user enters input
+					currentPropertyName = getInput(); //user enters input
 					currentProperty = null;
 					currentStreet = null;//used to store and manipulate current street object
 					ownsProperty = false; //used to determine if the user has entered a valid street
@@ -973,7 +973,7 @@ class TestWindow extends JFrame {
 				boolean tempCommand = true;
 				console.append("You do not have enough money to buy this property, would you like to sell properties to raise money? (Yes/No)" + "\n"); 
 				while(tempCommand){
-					String command = sc.nextLine();
+					String command = getInput();
 					switch(command){
 					case "Yes": propertyManagement(player); 
 					if(player.moneyBalance < property.buyPrice){
@@ -994,7 +994,7 @@ class TestWindow extends JFrame {
 				boolean tempCommand = true;
 				Scanner sc = new Scanner(System.in);
 				while(tempCommand){
-					String command = sc.nextLine();
+					String command = getInput();
 					switch(command){
 					case "Buy": buyProperty(player, property); tempCommand = false; break;
 					case "Auction": auctionProperty(property); tempCommand = false; break;
@@ -1026,13 +1026,13 @@ class TestWindow extends JFrame {
 				player.ownedProperties = temp;
 			}
 			//prints out the owned properties
-			System.out.print(player.playerName + " now owns the following properties: " + "\n");
+			console.append(player.playerName + " now owns the following properties: " + "\n");
 			for(int a = 0; a < player.ownedProperties.length; a++){
 				if(a == player.ownedProperties.length -1){
-					System.out.print(player.ownedProperties[a].propertyName + "\n" + "\n");
+					console.append(player.ownedProperties[a].propertyName + "\n");
 				}
 				else{
-					System.out.print(player.ownedProperties[a].propertyName + ", " + "\n");
+					console.append(player.ownedProperties[a].propertyName + ", " + "\n");
 				}
 			}
 		}
@@ -1055,11 +1055,11 @@ class TestWindow extends JFrame {
 					}
 					Scanner sc = new Scanner(System.in);
 					console.append(playerList[i].playerName + " would you like to bid on " + property.propertyName + "? The current bid is " + tempprice);
-					String command = sc.nextLine();
+					String command = getInput();
 					switch(command){
 					case "Yes": 
 						console.append("What would you like your bid to be?" + "\n");
-						int bidamount = sc.nextInt(); 
+						int bidamount = Integer.parseInt(getInput()); 
 						if(bidamount > tempprice && bidamount <= playerList[i].moneyBalance){
 							templeader = playerList[i];
 							tempprice = bidamount; 
@@ -1095,13 +1095,13 @@ class TestWindow extends JFrame {
 				templeader.ownedProperties = temp;
 			}
 			//prints out the owned properties
-			System.out.print(templeader.playerName + " now owns the following properties: " + "\n");
+			console.append(templeader.playerName + " now owns the following properties: " + "\n");
 			for(int a = 0; a < templeader.ownedProperties.length; a++){
 				if(a == templeader.ownedProperties.length -1){
-					System.out.print(templeader.ownedProperties[a].propertyName + "\n" + "\n");
+					console.append(templeader.ownedProperties[a].propertyName + "\n");
 				}
 				else{
-					System.out.print(templeader.ownedProperties[a].propertyName + ", " + "\n");
+					console.append(templeader.ownedProperties[a].propertyName + ", " + "\n");
 				}
 			}
 		}
@@ -1129,22 +1129,22 @@ class TestWindow extends JFrame {
 					}
 					}
 					else {
-						if(property.type.equals("Railroad" + "\n")) {
+						if(property.type.equals("Railroad")) {
 							//Because when you run the for loop
 							//the condition will be true at least once 
 							//i.e. at the position of that property in the array of allProperties
 							int countRailOwned = -1;
 							for(int i = 0; i < allProperties.length; i++) {
-								if(allProperties[i].type.equals("Railroad" + "\n") && allProperties[i].owner==property.owner) {
+								if(allProperties[i].type.equals("Railroad" ) && allProperties[i].owner==property.owner) {
 									countRailOwned +=1;
 								}
 							}
 							rentam = property.rentArray[countRailOwned];
 						}
-						else if(property.type.equals("Utility" + "\n")) {
+						else if(property.type.equals("Utility")) {
 							int countUtilOwned = -1;
 							for(int i = 0; i < allProperties.length; i++) {
-								if(allProperties[i].type.equals("Utility" + "\n") && allProperties[i].owner==property.owner) {
+								if(allProperties[i].type.equals("Utility") && allProperties[i].owner==property.owner) {
 									countUtilOwned +=1;
 								}
 							}
@@ -1212,22 +1212,22 @@ class TestWindow extends JFrame {
 					}
 					}
 					else {
-						if(property.type.equals("Railroad" + "\n")) {
+						if(property.type.equals("Railroad")) {
 							//Because when you run the for loop
 							//the condition will be true at least once 
 							//i.e. at the position of that property in the array of allProperties
 							int countRailOwned = -1;
 							for(int i = 0; i < allProperties.length; i++) {
-								if(allProperties[i].type.equals("Railroad" + "\n") && allProperties[i].owner==property.owner) {
+								if(allProperties[i].type.equals("Railroad") && allProperties[i].owner==property.owner) {
 									countRailOwned +=1;
 								}
 							}
 							rentam = property.rentArray[countRailOwned];
 						}
-						else if(property.type.equals("Utility" + "\n")) {
+						else if(property.type.equals("Utility")) {
 							int countUtilOwned = -1;
 							for(int i = 0; i < allProperties.length; i++) {
-								if(allProperties[i].type.equals("Railroad" + "\n") && allProperties[i].owner==property.owner) {
+								if(allProperties[i].type.equals("Railroad" ) && allProperties[i].owner==property.owner) {
 									countUtilOwned +=1;
 								}
 							}
