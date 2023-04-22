@@ -43,9 +43,9 @@ import javax.swing.JLabel;
 
 class TestWindow extends JFrame {
 	  
-	private JTextField userInput;
-	private JTextArea console;
-	private JButton btnBarter, btnPropertyManagement, btnRoll;
+	private static JTextField userInput;
+	static private JTextArea console;
+	private JButton btnBarter, btnPropertyManagement, btnRoll, submit;
 	public static Image img;
 	  
 	public TestWindow() {
@@ -64,6 +64,10 @@ class TestWindow extends JFrame {
 		btnRoll.setBounds(1232, 687, 182, 43);
 		getContentPane().add(btnRoll);
 		
+		JButton submit = new JButton("Submit");
+		submit.setBounds(1232, 750, 182, 43);
+		getContentPane().add(submit);
+		
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(766, 8, 427, 629);
 		getContentPane().add(textArea);
@@ -73,8 +77,9 @@ class TestWindow extends JFrame {
 		getContentPane().add(userInput);
 		userInput.setColumns(10);
 		
-		JTextArea console = new JTextArea();
+		console = new JTextArea();
 		console.setBounds(1232, 8, 182, 543);
+		console.setEditable(false);
 		getContentPane().add(console);
 		
 		JLabel board = new JLabel();
@@ -86,6 +91,7 @@ class TestWindow extends JFrame {
 		btnBarter.addActionListener(monolistener);
 		btnPropertyManagement.addActionListener(monolistener);
 		btnRoll.addActionListener(monolistener);
+		submit.addActionListener(monolistener);
 		userInput.addActionListener(monolistener);
 		
 		setVisible(true);
@@ -110,6 +116,9 @@ class TestWindow extends JFrame {
 			else if(e.getSource()==userInput) {
 				
 			}
+			else if(e.getSource()==submit) {
+				input=false;
+			}
 		}
 		
 	}
@@ -122,16 +131,25 @@ class TestWindow extends JFrame {
 		static String[] chanceDescriptions = new String[16];
 		static String[] monopolyPieces = new String[8];
 		static String[] spaceNames = new String[40];
-		static boolean gameon; 
+		static boolean gameon;
+		static boolean input;
 		static ActionListener1 monolistener;
 
+		static String getInput() {
+			input = true;
+			while(input) {
+				
+			}
+			return userInput.getText();
+		}
+		
 		//this method will get player amount, their respective information, and determine who goes first
-		player startGame(){ //returns the player that will be going first
+		static player startGame(){ //returns the player that will be going first
 			boolean validPlayerNum = false;
 			int numPlayers = 0;
 			while (!validPlayerNum){
-				console.append("Enter number of players (2-8): ");
-				numPlayers = Integer.parseInt(userInput.getText());
+				console.append("Enter number of players (2-8): \n");
+				numPlayers = Integer.parseInt(getInput());
 				if (numPlayers >= 2 && numPlayers <= 8) {
 					validPlayerNum = true;
 				} else console.append("Please enter valid number of players.\n");
@@ -143,12 +161,12 @@ class TestWindow extends JFrame {
 			for (int i = 0; i < playerList.length; i++) {
 				console.append("Enter player name: \n");
 				//playerList[i] = m.new player();
-				playerList[i].playerName = userInput.getText(); //player enters their name 
+				playerList[i].playerName = getInput(); //player enters their name 
 				boolean validPiece = false;
 				
 				while (!validPiece) { //player keeps choosing a piece until they select a valid piece that is not already taken
-					System.out.print(playerList[i].playerName + ", what piece would you like to be? (battleship, car, penguin, top hat, duck, dog, cat, dinosaur) ");
-					//String pieceChoice = sc.nextLine();
+					console.append(playerList[i].playerName + ", what piece would you like to be? (battleship, car, penguin, top hat, duck, dog, cat, dinosaur) \n");
+					String pieceChoice = getInput();
 					
 					for (int x = 0; x < monopolyPieces.length; x++) { //matches input against every element in piece array
 						if (pieceChoice.equals(monopolyPieces[x])) { //player input is in the list
@@ -159,7 +177,7 @@ class TestWindow extends JFrame {
 						}
 				
 					}
-					if (!validPiece) System.out.println("Piece is either chosen or does not exist.");
+					if (!validPiece) console.append("Piece is either chosen or does not exist.\n");
 				}
 				
 			}
@@ -167,10 +185,10 @@ class TestWindow extends JFrame {
 			int[] playerRolls = new int[playerList.length];
 			
 			for (int i = 0; i < playerList.length; i++) { //all the players roll the dice
-				System.out.println(playerList[i].playerName + " is rolling" );
+				console.append(playerList[i].playerName + " is rolling\n");
 				rollDice();
 				playerRolls[i] = dice1 + dice2;
-				System.out.println(playerList[i].playerName + " rolled a " + playerRolls[i]);
+				console.append(playerList[i].playerName + " rolled a " + playerRolls[i] + "\n");
 			}
 			
 			int maxRollerIndex = 0;
@@ -181,7 +199,7 @@ class TestWindow extends JFrame {
 					maxRollerIndex = i;
 				}
 			}
-			System.out.println(playerList[maxRollerIndex].playerName + " had the highest roll of " + maxRoll + ". They will be first.");
+			console.append(playerList[maxRollerIndex].playerName + " had the highest roll of " + maxRoll + ". They will be first.\n");
 			return playerList[maxRollerIndex];
 		}
 
@@ -1683,7 +1701,7 @@ class TestWindow extends JFrame {
 					housePrice = hPrice;
 				}
 				
-			
+			}
 
 			public static void main(String[] args) {		
 				// creating the array of all properties
@@ -1868,4 +1886,3 @@ class TestWindow extends JFrame {
 			
 			}
 		}
-}
