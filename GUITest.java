@@ -66,8 +66,12 @@ public class GUITest extends JFrame {
 		getContentPane().add(sp);
 		
 		JLabel board = new JLabel();
-		board.setIcon(new ImageIcon("C:\\Users\\keega\\eclipse-workspace\\Monopoly\\src\\mono\\Monopoly700.jpg"));
-		board.setBounds(10, 10, 715, 715);
+		ImageIcon mono = new ImageIcon("C:\\Users\\keega\\eclipse-workspace\\Monopoly\\src\\mono\\Monopoly700.jpg");
+		Image image = mono.getImage();
+		Image newmono = image.getScaledInstance(y-(f*5), y-(f*5), java.awt.Image.SCALE_SMOOTH);
+		mono = new ImageIcon(newmono);
+		board.setIcon(mono);
+		board.setBounds(f/2, f/4, y-(f*5), y-(f*5));
 		getContentPane().add(board);
 		
 		ActionListener3 monolistener= new ActionListener3();
@@ -88,11 +92,10 @@ public class GUITest extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 		if(e.getSource()==btnBarter) {
-			console.append("Barter coming soon!");
+			barter(cPlayer);
 		}
 		if(e.getSource()==btnPropertyManagement) {
 			propertyManagement(cPlayer);
-			console.append(cPlayer.playerName + " has $" + cPlayer.moneyBalance + "\n");
 		}
 		if(e.getSource()==btnRoll) {
 			roll(cPlayer);
@@ -336,6 +339,25 @@ public class GUITest extends JFrame {
 	
 	static void roll(player player) {
 		
+		if(player.inJail == true) {
+			JOptionPane jp = new JOptionPane();
+			String [] options = {"Yes", "No"};
+			if(player.JailFreeCards > 0) {
+				var yesno = jp.showOptionDialog(null, "Would you like to use your get out of jail free card?", "You're in jail!", 0, 2, null, options, options[0]);
+				if(yesno == 0) {
+					player.JailFreeCards -= 1;
+					player.inJail = false;
+				}
+			}
+			else {
+				var yesno2 = jp.showOptionDialog(null, "Would you like to pay $50 to get out of jail?", "You're in jail!", 0, 2, null, options, options[0]);
+				if(yesno2 == 0) {
+					player.moneyBalance -= 50;
+					player.inJail = false;
+				}
+			}
+		}
+		
 		int doubletracker = 0;
 		boolean tempjailtrack = false; //this is made true if a player rolls doubles and the amount of doubles must be tracked
 		
@@ -365,6 +387,7 @@ public class GUITest extends JFrame {
 		//A double means that you roll the same value for each dice, you can roll again if you roll doubles
 		
 		if(player.boardPosition > 39){ //if the player passes the GO square, they get $200
+			console.append(player.playerName + " has passed go and collect $200!\n");
 			player.moneyBalance += 200;
 			player.boardPosition -= 40;
 		}
@@ -486,7 +509,7 @@ public class GUITest extends JFrame {
 		else{
 			 payRent(player, allProperties[12].owner, allProperties[12]); 
 		} break;
-		case 19: console.append("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName); 
+		case 19: console.append("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName + "\n"); 
 		if(allProperties[13].owned==false){
 			manageUnownedProperty(player, allProperties[13]);
 		}
@@ -503,49 +526,49 @@ public class GUITest extends JFrame {
 		} break;
 		case 22: console.append("You are at board position " + player.boardPosition + ", chance, drawing a chance card now." + "\n"); 
 		drawChance(player); break;
-		case 23: console.append("You are at board position " + player.boardPosition + ", " + allProperties[15].propertyName); 
+		case 23: console.append("You are at board position " + player.boardPosition + ", " + allProperties[15].propertyName + "\n"); 
 		if(allProperties[15].owned==false){
 			manageUnownedProperty(player, allProperties[15]);
 		}
 		else{
 			 payRent(player, allProperties[15].owner, allProperties[15]); 
 		} break;
-		case 24: console.append("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName); 
+		case 24: console.append("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName + "\n"); 
 		if(allProperties[16].owned==false){
 			manageUnownedProperty(player, allProperties[16]);
 		}
 		else{
 			 payRent(player, allProperties[16].owner, allProperties[16]); 
 		} break;
-		case 25: console.append("You are at board position " + player.boardPosition + ", " + allProperties[17].propertyName); 
+		case 25: console.append("You are at board position " + player.boardPosition + ", " + allProperties[17].propertyName + "\n"); 
 		if(allProperties[17].owned==false){
 			manageUnownedProperty(player, allProperties[17]);
 		}
 		else{
 			 payRent(player, allProperties[17].owner, allProperties[17]); 
 		} break;
-		case 26: console.append("You are at board position " + player.boardPosition + ", " + allProperties[18].propertyName); 
+		case 26: console.append("You are at board position " + player.boardPosition + ", " + allProperties[18].propertyName + "\n"); 
 		if(allProperties[18].owned==false){
 			manageUnownedProperty(player, allProperties[18]);
 		}
 		else{
 			 payRent(player, allProperties[18].owner, allProperties[18]); 
 		} break;
-		case 27: console.append("You are at board position " + player.boardPosition + ", " + allProperties[19].propertyName); 
+		case 27: console.append("You are at board position " + player.boardPosition + ", " + allProperties[19].propertyName + "\n"); 
 		if(allProperties[19].owned==false){
 			manageUnownedProperty(player, allProperties[19]);
 		}
 		else{
 			 payRent(player, allProperties[19].owner, allProperties[19]); 
 		} break;
-		case 28: console.append("You are at board position " + player.boardPosition + ", " + allProperties[20].propertyName); 
+		case 28: console.append("You are at board position " + player.boardPosition + ", " + allProperties[20].propertyName + "\n"); 
 		if(allProperties[20].owned==false){
 			manageUnownedProperty(player, allProperties[20]);
 		}
 		else{
 			 payRent(player, allProperties[20].owner, allProperties[20]); 
 		} break;
-		case 29: console.append("You are at board position " + player.boardPosition + ", " + allProperties[21].propertyName); 
+		case 29: console.append("You are at board position " + player.boardPosition + ", " + allProperties[21].propertyName + "\n"); 
 		if(allProperties[21].owned==false){
 			manageUnownedProperty(player, allProperties[21]);
 		}
@@ -553,14 +576,14 @@ public class GUITest extends JFrame {
 			 payRent(player, allProperties[21].owner, allProperties[21]); 
 		} break;
 		case 30: player.inJail = true; console.append("You landed on go to jail, go to jail immediately!" + "\n"); break;
-		case 31: console.append("You are at board position " + player.boardPosition + " " + allProperties[22].propertyName); 
+		case 31: console.append("You are at board position " + player.boardPosition + " " + allProperties[22].propertyName + "\n"); 
 		if(allProperties[22].owned==false){
 			manageUnownedProperty(player, allProperties[22]);
 		}
 		else{
 			 payRent(player, allProperties[22].owner, allProperties[22]); 
 		} break;
-		case 32: console.append("You are at board position " + player.boardPosition + ", " + allProperties[23].propertyName); 
+		case 32: console.append("You are at board position " + player.boardPosition + ", " + allProperties[23].propertyName + "\n"); 
 		if(allProperties[23].owned==false){
 			manageUnownedProperty(player, allProperties[23]);
 		}
@@ -569,14 +592,14 @@ public class GUITest extends JFrame {
 		} break;
 		case 33: console.append("You are at board position " + player.boardPosition + ", community chest, drawing a community chest card now." + "\n"); 
 		drawCommunityChest(player); break;
-		case 34: console.append("You are at board position " + player.boardPosition + ", " + allProperties[24].propertyName); 
+		case 34: console.append("You are at board position " + player.boardPosition + ", " + allProperties[24].propertyName + "\n"); 
 		if(allProperties[24].owned==false){
 			manageUnownedProperty(player, allProperties[24]);
 		}
 		else{
 			 payRent(player, allProperties[24].owner, allProperties[24]); 
 		} break;
-		case 35: console.append("You are at board position " + player.boardPosition + ", " + allProperties[25].propertyName); 
+		case 35: console.append("You are at board position " + player.boardPosition + ", " + allProperties[25].propertyName + "\n"); 
 		if(allProperties[25].owned==false){
 			manageUnownedProperty(player, allProperties[25]);
 		}
@@ -585,7 +608,7 @@ public class GUITest extends JFrame {
 		} break;
 		case 36: console.append("You are at board position " + player.boardPosition + ", chance, drawing a chance card now." + "\n"); 
 		drawChance(player); break;
-		case 37: console.append("You are at board position " + player.boardPosition + ", " + allProperties[26].propertyName); 
+		case 37: console.append("You are at board position " + player.boardPosition + ", " + allProperties[26].propertyName + "\n"); 
 		if(allProperties[26].owned==false){
 			manageUnownedProperty(player, allProperties[26]);
 		}
@@ -593,7 +616,7 @@ public class GUITest extends JFrame {
 			 payRent(player, allProperties[26].owner, allProperties[26]); 
 		} break;
 		case 38: console.append("You are at board position " + player.boardPosition + ", luxury tax. Pay $100!" + "\n"); player.moneyBalance-=100; break;
-		case 39: console.append("You are at board position " + player.boardPosition + ", " + allProperties[27].propertyName); 
+		case 39: console.append("You are at board position " + player.boardPosition + ", " + allProperties[27].propertyName + "\n"); 
 		if(allProperties[27].owned==false){
 			manageUnownedProperty(player, allProperties[27]);
 		}
@@ -615,7 +638,7 @@ public class GUITest extends JFrame {
 			console.append(player.playerName + " you have gone bankrupt! Please end turn, all other methods will become unavailable!" + "\n");
 		}
 		else{
-			console.append(player.playerName + " has exhaused all rolls!");
+			console.append(player.playerName + " has exhaused all rolls!\n");
 		}
 		doubletracker = 0;
 		player.rollTurn = false;
@@ -626,7 +649,7 @@ public class GUITest extends JFrame {
 		if(player.moneyBalance > property.buyPrice) {
 			String [] options = {"Buy", "Auction"};
 			JOptionPane cp = new JOptionPane();
-			var command = cp.showOptionDialog(null, "Would you like to auction or buy " + property.propertyName + "?", "Unowned Property!", 0, 2, null, options, options[0]);
+			var command = cp.showOptionDialog(null, "Would you like to auction or buy " + property.propertyName + " for $" + property.buyPrice + "?", "Unowned Property!", 0, 2, null, options, options[0]);
 			if(command == 0) {
 				buyProperty(player, property);
 			}
@@ -646,7 +669,7 @@ public class GUITest extends JFrame {
 		property.owner = player; //property is transfered to player
 		player.moneyBalance -= property.buyPrice; //player pays required funds
 		//prints out the property bought and now account balance
-		console.append(player.playerName + " has bought " + property.propertyName + " for $" + property.buyPrice + " and now has an account balance of $" + player.moneyBalance);
+		console.append(player.playerName + " has bought " + property.propertyName + " for $" + property.buyPrice + " and now has an account balance of $" + player.moneyBalance + "\n");
 		//prints out the owned properties
 		console.append(player.playerName + " now owns the following properties: " + "\n");
 		for(int a = 0; a < allProperties.length; a++){
@@ -668,12 +691,12 @@ public class GUITest extends JFrame {
 			for(int i = 0; i < playerList.length; i++) {
 				String name = playerList[i].playerName;
 				JOptionPane cp = new JOptionPane();
-				var command = cp.showOptionDialog(null, name + " would you like to bid on " + property.propertyName + "?", "Auction!", 0, 2, null, options, options[0]);
+				var command = cp.showOptionDialog(null, name + " you have $" +playerList[i].moneyBalance + ", would you like to bid on " + property.propertyName + "?", "Auction!", 0, 2, null, options, options[0]);
 				if(command == 0) {
 					var am = JOptionPane.showInputDialog("Please enter your bid amount!");
 					try {
 						int bid = Integer.parseInt(am);
-						if(bid > bidam) {
+						if(bid > bidam && playerList[i].moneyBalance >= bid) {
 							bidam = bid;
 							counter = 0;
 							leader = playerList[i];
@@ -1190,7 +1213,238 @@ public class GUITest extends JFrame {
 	}
 	
 	static void barter(player player) {
+		int otherplycards = 0, curplycards = 0, curplymoney = 0, otherplymoney = 0;
+		property[] curplyproperties = null, otherplyproperties = null;
+		String[]playernames = new String[playerList.length-1];
+		int counter = 0;
+		for(int i = 0; i < playerList.length; i++) {
+			if(playerList[i] == player) {
+				continue;
+			}
+			else {
+				playernames[counter] = playerList[i].playerName;
+				counter++;
+			}
+		}
 		
+		JOptionPane jp = new JOptionPane();
+		var command = jp.showOptionDialog(null, "Please select a player:", "Barter", 0, 2, null, playernames, playernames[0]);
+		String desiredplayer = playernames[command];
+		int indexplayerlist = 0;
+		for(int i = 0; i < playerList.length; i++) {
+			if(desiredplayer.equals(playerList[i].playerName)) {
+				indexplayerlist = i;
+				break;
+			}
+		}
+		String [] options = {"Money", "Cards", "Properties", "Offer"};
+		boolean nodeal = true; 
+		while(nodeal) {
+		var command2 = jp.showOptionDialog(null, "Please select what you would like from " + playerList[indexplayerlist].playerName, "Barter", 0, 2, null, options, options[0]);
+		switch(command2) {
+		case 0: var am2 = jp.showInputDialog(playerList[indexplayerlist].playerName + " has $" + playerList[indexplayerlist].moneyBalance + ". Please enter the amount of money you would like!");
+		int am3 = Integer.parseInt(am2);
+		if(am3 > playerList[indexplayerlist].moneyBalance || am3 <= 0) {
+			jp.showMessageDialog(jp, "Invalid amount!");
+		}
+		else {
+			otherplymoney = am3;
+
+		}
+		break;
+		case 1: if(playerList[indexplayerlist].JailFreeCards < 1) {
+			jp.showMessageDialog(jp, "No get out of jail free cards available!");
+		}
+		else {
+			var am1 = jp.showInputDialog(playerList[indexplayerlist].playerName + " has " + playerList[indexplayerlist].JailFreeCards + " cards. Please enter the amount of cards you would like!");
+			int am = Integer.parseInt(am1);
+			if(am > playerList[indexplayerlist].JailFreeCards || am < 1) {
+				jp.showMessageDialog(jp, "Invalid amount!");
+			}
+			else {
+				otherplycards = am;
+			}
+		}
+			break;
+		case 2: 
+			int counter2 = 0;
+			for(int i = 0; i < allProperties.length; i++) {
+				if(allProperties[i].owner == playerList[indexplayerlist]) {
+					counter2 += 1;
+				}
+			}
+			property [] temp = new property[counter2];
+			int index = 0;
+			for(int i = 0; i < allProperties.length; i++) {
+				if(allProperties[i].owner == playerList[indexplayerlist]) {
+					temp[index] = allProperties[i];
+					index += 1;
+				}
+			}
+			if(temp.length < 1) jp.showMessageDialog(jp, "No properties available to trade for!");
+			if(temp.length > 0) {
+			String[]tempnames = new String[temp.length];
+			for(int i = 0; i < temp.length; i++) {
+				tempnames[i] = temp[i].propertyName;
+			}
+			int selection = jp.showOptionDialog(null, "Please select a property!", "Property Manager", 0, 2, null, tempnames, tempnames[0]);
+			property tempprop = null;
+			for(int i = 0; i < allProperties.length; i++) {
+				if(allProperties[i].boardPosition == temp[selection].boardPosition) {
+					tempprop = allProperties[i]; break;
+				}
+			}
+			if(otherplyproperties == null) {
+				otherplyproperties = new property[1];
+				otherplyproperties[0] = tempprop;
+			}
+			else {
+				property [] temparray = new property[otherplyproperties.length + 1];
+				for(int i = 0; i < otherplyproperties.length; i++) {
+					temparray[i] = otherplyproperties[i];
+				}
+				temparray[otherplyproperties.length] = tempprop;
+				otherplyproperties = temparray;
+			}
+			
+			}
+			break;
+		case 3: nodeal = false; break;
+		}
+		}
+		nodeal = true;
+		while(nodeal) {
+			var command2 = jp.showOptionDialog(null, "Please select what you would like from " + player.playerName, "Barter", 0, 2, null, options, options[0]);
+			switch(command2) {
+			case 0: var am2 = jp.showInputDialog(player.playerName + " has $" + player.moneyBalance + ". Please enter the amount of money you would like!");
+			int am4 = Integer.parseInt(am2);
+			if(am4 > player.moneyBalance || am4 <= 0) {
+				jp.showMessageDialog(jp, "Invalid amount!");
+			}
+			else {
+				curplymoney = am4;
+
+			}
+			break;
+			case 1: if(player.JailFreeCards < 1) {
+				jp.showMessageDialog(jp, "No get out of jail free cards available!");
+			}
+			else {
+				var am5 = jp.showInputDialog(player.playerName + " has " + player.JailFreeCards + " cards. Please enter the amount of cards you would like!");
+				int am = Integer.parseInt(am5);
+				if(am > player.JailFreeCards || am < 1) {
+					jp.showMessageDialog(jp, "Invalid amount!");
+				}
+				else {
+					curplycards = am;
+					System.out.println(curplycards);
+
+				}
+			}
+				break;
+			case 2: 
+				int counter2 = 0;
+				for(int i = 0; i < allProperties.length; i++) {
+					if(allProperties[i].owner == player) {
+						counter2 += 1;
+					}
+				}
+				property [] temp = new property[counter2];
+				int index = 0;
+				for(int i = 0; i < allProperties.length; i++) {
+					if(allProperties[i].owner == player) {
+						temp[index] = allProperties[i];
+						index += 1;
+					}
+				}
+				if(temp.length < 1) jp.showMessageDialog(jp, "No properties available to trade for!");
+				if(temp.length > 0) {
+				String[]tempnames = new String[temp.length];
+				for(int i = 0; i < temp.length; i++) {
+					tempnames[i] = temp[i].propertyName;
+				}
+				int selection = jp.showOptionDialog(null, "Please select a property!", "Property Manager", 0, 2, null, tempnames, tempnames[0]);
+				property tempprop = null;
+				for(int i = 0; i < allProperties.length; i++) {
+					if(allProperties[i].boardPosition == temp[selection].boardPosition) {
+						tempprop = allProperties[i]; break;
+					}
+				}
+				if(curplyproperties == null) {
+					curplyproperties = new property[1];
+					curplyproperties[0] = tempprop;
+				}
+				else {
+					property [] temparray = new property[curplyproperties.length + 1];
+					for(int i = 0; i < curplyproperties.length; i++) {
+						temparray[i] = curplyproperties[i];
+					}
+					temparray[curplyproperties.length] = tempprop;
+					curplyproperties = temparray;
+				}
+				
+				}
+				break;
+			case 3: nodeal = false; break;
+			}
+			}
+		String otherplyoffer = "Money: " + otherplymoney + ", Cards: " + otherplycards + " Properties: ";
+		if(otherplyproperties != null) {
+			for(int i = 0; i < otherplyproperties.length; i++) {
+				if(i == otherplyproperties.length -1) {
+					otherplyoffer += "" + otherplyproperties[i].propertyName + "! ";
+				}
+				else {
+					otherplyoffer += "" + otherplyproperties[i].propertyName + ", "; 	
+				}
+			}
+		}
+		
+		String [] optionz = {"Yes", "No"};
+		var dealacceptedcur = jp.showOptionDialog(null, playerList[indexplayerlist].playerName + " offers: " + otherplyoffer + player.playerName + " do you accept the deal?", "Property Manager", 0, 2, null, optionz, optionz[0]);
+		if(dealacceptedcur == 0) {
+			String curplyoffer = "Money: " + curplymoney + ", Cards: " + curplycards + " Properties: ";
+			if(curplyproperties != null) {
+				for(int i = 0; i < curplyproperties.length; i++) {
+					if(i == curplyproperties.length -1) {
+						curplyoffer += "" + curplyproperties[i].propertyName + "! ";
+					}
+					else {
+						curplyoffer += "" + curplyproperties[i].propertyName + ", "; 	
+					}
+				}
+			}
+			var dealacceptedoth = jp.showOptionDialog(null, player.playerName + " offers: " + curplyoffer + playerList[indexplayerlist].playerName + " do you accept the deal?", "Property Manager", 0, 2, null, optionz, optionz[0]);
+			if(dealacceptedoth == 0) {
+				player.moneyBalance += otherplymoney;
+				player.moneyBalance -= curplymoney;
+				player.JailFreeCards += otherplycards;
+				player.JailFreeCards -= curplycards;
+				if(otherplyproperties != null){
+				for(int i = 0; i < otherplyproperties.length; i++) {
+					for(int a = 0; a < allProperties.length; a++) {
+						if(otherplyproperties[i] == allProperties[a]) {
+							allProperties[a].owner = player; break;
+						}
+					}
+				}
+				}
+				playerList[indexplayerlist].moneyBalance -= otherplymoney;
+				playerList[indexplayerlist].moneyBalance += curplymoney;
+				playerList[indexplayerlist].JailFreeCards -= otherplycards;
+				playerList[indexplayerlist].JailFreeCards += curplycards;
+				if(curplyproperties != null) {
+					for(int i = 0; i < curplyproperties.length; i++) {
+					for(int a = 0; a < allProperties.length; a++) {
+						if(curplyproperties[i] == allProperties[a]) {
+							allProperties[a].owner = playerList[indexplayerlist]; break;
+						}
+					}
+				}
+				}
+			}
+		}
+		audit();
 	}
 	
 	static void payRent(player payer, player reciever, property property) {
@@ -1253,7 +1507,7 @@ public class GUITest extends JFrame {
 							for(int i = 0; i < allProperties.length; i++){
 								if(allProperties[i].owner == payer) {
 								allProperties[i].owner = reciever; 
-								console.append(reciever.playerName + " now owns " + allProperties[i].propertyName);
+								console.append(reciever.playerName + " now owns " + allProperties[i].propertyName + "\n");
 								}
 							}
 							console.append(reciever.playerName + " will recieve " + payer.moneyBalance + " in cash from " + payer.playerName + "!" + "\n");
@@ -1333,7 +1587,7 @@ public class GUITest extends JFrame {
 							for(int i = 0; i < allProperties.length; i++){
 								if(allProperties[i].owner == payer) {
 								allProperties[i].owner = reciever; 
-								console.append(reciever.playerName + " now owns " + allProperties[i].propertyName);
+								console.append(reciever.playerName + " now owns " + allProperties[i].propertyName + "\n");
 								}
 							}
 							console.append(reciever.playerName + " will recieve " + payer.moneyBalance + " in cash from " + payer.playerName + "!" + "\n");
@@ -1362,12 +1616,12 @@ public class GUITest extends JFrame {
 		int card = rand.nextInt(16); //draw random card
 		
 		switch (card) {
-		case 0: console.append(communityChestDescriptions[0]); player.moneyBalance += 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break;
-		case 1: console.append(communityChestDescriptions[1]); player.moneyBalance += 50; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+		case 0: console.append(communityChestDescriptions[0]); player.moneyBalance += 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break;
+		case 1: console.append(communityChestDescriptions[1]); player.moneyBalance += 50; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break; 
 		case 2: console.append(communityChestDescriptions[2]); player.inJail = true; player.boardPosition = 10; break;
-		case 3: console.append(communityChestDescriptions[3]); player.moneyBalance -= 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break;
-		case 4: console.append(communityChestDescriptions[4]); player.moneyBalance += 20; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break;
-		case 5: console.append(communityChestDescriptions[5]); player.moneyBalance += 10; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break;
+		case 3: console.append(communityChestDescriptions[3]); player.moneyBalance -= 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break;
+		case 4: console.append(communityChestDescriptions[4]); player.moneyBalance += 20; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break;
+		case 5: console.append(communityChestDescriptions[5]); player.moneyBalance += 10; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break;
 		case 6: console.append(communityChestDescriptions[6]); player.JailFreeCards +=1; break; 
 		case 7: console.append(communityChestDescriptions[7]); 
 		for(int i = 0; i < playerList.length; i++){
@@ -1383,12 +1637,12 @@ public class GUITest extends JFrame {
 			console.append(playerList[i].playerName + " new account balance is " + playerList[i].moneyBalance);
 		}
 		break; 
-		case 8: console.append(communityChestDescriptions[8]); player.moneyBalance += 200; player.boardPosition = 0; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break;
-		case 9: console.append(communityChestDescriptions[9]); player.moneyBalance -=50; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
-		case 10: console.append(communityChestDescriptions[10]); player.moneyBalance += 25; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
-		case 11: console.append(communityChestDescriptions[11]); player.moneyBalance += 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
-		case 12: console.append(communityChestDescriptions[12]); player.moneyBalance -= 50; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
-		case 13: console.append(communityChestDescriptions[13]); player.moneyBalance += 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break; 
+		case 8: console.append(communityChestDescriptions[8]); player.moneyBalance += 200; player.boardPosition = 0; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break;
+		case 9: console.append(communityChestDescriptions[9]); player.moneyBalance -=50; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break; 
+		case 10: console.append(communityChestDescriptions[10]); player.moneyBalance += 25; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break; 
+		case 11: console.append(communityChestDescriptions[11]); player.moneyBalance += 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break; 
+		case 12: console.append(communityChestDescriptions[12]); player.moneyBalance -= 50; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break; 
+		case 13: console.append(communityChestDescriptions[13]); player.moneyBalance += 100; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break; 
 		case 14: console.append(communityChestDescriptions[14]); 
 		int paymentTracker = 0;
 		for(int i = 0; i < allProperties.length; i++){
@@ -1414,7 +1668,7 @@ public class GUITest extends JFrame {
 			console.append("You paid " + paymentTracker + " in fines!!" + "\n");
 		}
 		break; 
-		case 15: console.append(communityChestDescriptions[15]); player.moneyBalance += 200; console.append(player.playerName + " has a new account balance of " + player.moneyBalance); break;
+		case 15: console.append(communityChestDescriptions[15]); player.moneyBalance += 200; console.append(player.playerName + " has a new account balance of " + player.moneyBalance + "\n"); break;
 		}
 	}
 	
@@ -1491,7 +1745,7 @@ public class GUITest extends JFrame {
 		}
 		//Prints updated player money balances
 		for(int i = 0; i < playerList.length; i++){
-			console.append(playerList[i].playerName + " has an account balance of " + playerList[i].moneyBalance);
+			console.append(playerList[i].playerName + " has an account balance of " + playerList[i].moneyBalance + "\n");
 		}
 		break; 
 		case 3: console.append(chanceDescriptions[3]); player.inJail = true; player.boardPosition = 10; break;
@@ -1541,7 +1795,7 @@ public class GUITest extends JFrame {
 			console.append("You paid $200 in income tax!" + "\n");
 		}
 		else if(player.boardPosition == 19){
-			console.append("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName); 
+			console.append("You are at board position " + player.boardPosition + ", " + allProperties[13].propertyName + "\n"); 
 			if(allProperties[13].owned==false){
 				manageUnownedProperty(player, allProperties[13]);
 			}
@@ -1559,7 +1813,7 @@ public class GUITest extends JFrame {
 		else{
 			player.boardPosition = 24;
 		} 
-		console.append("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName); 
+		console.append("You are at board position " + player.boardPosition + ", " + allProperties[16].propertyName + "\n"); 
 		if(allProperties[16].owned==false){
 			manageUnownedProperty(player, allProperties[16]);
 		}
@@ -1573,7 +1827,7 @@ public class GUITest extends JFrame {
 		else{
 			player.boardPosition = 11;
 		} 
-		console.append("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName); 
+		console.append("You are at board position " + player.boardPosition + ", " + allProperties[6].propertyName + "\n"); 
 		if(allProperties[6].owned==false){
 			manageUnownedProperty(player, allProperties[6]);
 		}
@@ -1590,7 +1844,7 @@ public class GUITest extends JFrame {
 		else{
 			player.boardPosition = 5;
 		} 
-		console.append("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName); 
+		console.append("You are at board position " + player.boardPosition + ", " + allProperties[2].propertyName + "\n"); 
 		if(allProperties[2].owned==false){
 			manageUnownedProperty(player, allProperties[2]);
 		}
